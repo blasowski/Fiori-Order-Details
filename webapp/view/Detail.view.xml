@@ -1,0 +1,43 @@
+<mvc:View controllerName="sap.btp.details.controller.Detail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    xmlns:u="sap.uxap"
+    xmlns="sap.m">
+    <Page class="sapUiContentPadding" showNavButton="false" showHeader="false" showFooter="false">
+
+        <u:ObjectPageDynamicHeaderContent pinnable="true">
+            <u:ObjectPageDynamicHeaderTitle >
+                <u:heading>
+                    <Title text="Order N.{mTitle>/OrderID}"></Title>
+                </u:heading>
+                <u:breadcrumbs>
+                    <Breadcrumbs >
+                        <Link text="Home" press="onNavBack"></Link>
+                        <Link text="Order N.{mTitle>/OrderID}"></Link>
+                    </Breadcrumbs>
+                </u:breadcrumbs>
+                <u:snappedHeading>
+                </u:snappedHeading>
+                <u:expandedHeading>
+                </u:expandedHeading>
+
+            </u:ObjectPageDynamicHeaderTitle>
+        </u:ObjectPageDynamicHeaderContent>
+        <l:HorizontalLayout class="sapUiContentPadding">
+            <Table items="{path : 'mDetails>/'}" alternateRowColors="true">
+                <columns>
+                    <Column minScreenWidth="Tablet">
+                        <Text text="Product Name" />
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Inactive" press="onPress">
+                        <cells>
+                            <ObjectIdentifier text="{mDetails>Product/ProductName}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </l:HorizontalLayout>
+    </Page>
+</mvc:View>
