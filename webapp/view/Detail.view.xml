@@ -1,4 +1,4 @@
-<mvc:View controllerName="sap.btp.details.controller.Detail"
+<mvc:View xmlns:core="sap.ui.core" controllerName="sap.btp.details.controller.Detail"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:l="sap.ui.layout"
     xmlns:u="sap.uxap"
@@ -16,10 +16,17 @@
                         <Link text="Order N.{mTitle>/OrderID}"></Link>
                     </Breadcrumbs>
                 </u:breadcrumbs>
-                <u:snappedHeading>
-                </u:snappedHeading>
-                <u:expandedHeading>
-                </u:expandedHeading>
+                <u:expandedContent>
+                    <l:HorizontalLayout class="sapUiContentPadding" >
+                        <Input value="{mTitle>/OrderID}"></Input>
+                        <Input value="{mTitle>/CustomerID}"></Input>
+                        <Input value="{mTitle>/OrderDate}"></Input>
+                    </l:HorizontalLayout>
+                </u:expandedContent>
+                <u:snappedContent>
+                    <Text text="{mTitle>/OrderID}"></Text>
+                    <Text text="{mTitle>/CustomerID}"></Text>
+                </u:snappedContent>
 
             </u:ObjectPageDynamicHeaderTitle>
         </u:ObjectPageDynamicHeaderContent>
