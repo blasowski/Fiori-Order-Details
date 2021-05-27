@@ -3,7 +3,7 @@ sap.ui.define([
     "sap/ui/core/routing/History",
     "sap/ui/core/BusyIndicator",
     "sap/ui/model/odata/v2/ODataModel",
-    "sap/ui/model/json/JSONModel",
+    "sap/ui/model/json/JSONModel"
 ],
     function (Controller, History, BusyIndicator, ODataModel, JSONModel) {
         "use strict";
@@ -11,6 +11,31 @@ sap.ui.define([
         return Controller.extend("sap.btp.details.controller.Detail", {
             onInit: function () {
                 this.getOwnerComponent().getRouter().getRoute("detail").attachPatternMatched(this._onRouteMatched, this);
+
+                var oTable = this.getView().byId("detailTable");
+                var s = 999
+                for (var i = 0; i < s; i++) {
+                    var oColumn = new sap.m.Column("col" + i, {
+                        header: new sap.m.Label({
+                            text: "/ProductID"
+                        })
+                    });
+                    oTable.addColumn(oColumn);
+                }
+                var oCell = [];
+                for (i = 0; i < s; i++) {
+                    if (i === 0) {
+                        var cell1 = new sap.m.Text({
+                            text: "/UnitPrice"
+                        });
+                    }
+                    oCell.push(cell1);
+                }
+                var aColList = new sap.m.ColumnListItem("aColList", {
+                    cells: oCell
+                 });
+                 oTable.bindItems("mDetails>", aColList);
+                 console.log()
             },
 
             _onRouteMatched: function (oEvent) {

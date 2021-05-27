@@ -3,7 +3,7 @@
     xmlns:l="sap.ui.layout"
     xmlns:u="sap.uxap"
     xmlns="sap.m">
-    <Page class="sapUiContentPadding" showNavButton="false" showHeader="false" showFooter="false">
+    <Page class="sapUiContentPadding" showNavButton="false" showHeader="false" showFooter="false" id="detailPage">
 
         <u:ObjectPageDynamicHeaderContent pinnable="true">
             <u:ObjectPageDynamicHeaderTitle >
@@ -30,21 +30,9 @@
 
             </u:ObjectPageDynamicHeaderTitle>
         </u:ObjectPageDynamicHeaderContent>
-        <l:HorizontalLayout class="sapUiContentPadding">
-            <Table items="{path : 'mDetails>/'}" alternateRowColors="true">
-                <columns>
-                    <Column minScreenWidth="Tablet">
-                        <Text text="Product Name" />
-                    </Column>
-                </columns>
-                <items>
-                    <ColumnListItem type="Inactive" press="onPress">
-                        <cells>
-                            <ObjectIdentifier text="{mDetails>Product/ProductName}" />
-                        </cells>
-                    </ColumnListItem>
-                </items>
+        <content>
+            <Table alternateRowColors="true" id="detailTable" inset="false" growing="true" growingScrollToLoad="true">
             </Table>
-        </l:HorizontalLayout>
+            </content>
     </Page>
 </mvc:View>
