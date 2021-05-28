@@ -21,25 +21,21 @@ sap.ui.define([
                     });
                     aCells.push(cell);
                 }
-                // aCells.forEach(function() {
-                //     var n = 1;
-                //     var oColumn = new sap.ui.table.Column("col" + n++, {
-                //         label: new sap.ui.commons.Label({
-                //             text: "{mTitle>/OrderID}"
-                //         }),
-                //         template: cell
-                //     });
-                //     oTable.addColumn(oColumn);
-                // });
+                console.log(aCells)
 
+                var oColumn = [];
                 for (var i = 0; i < 3; i++) {
-                    var oColumn = new sap.ui.table.Column("col" + i, {
+                    var column = new sap.ui.table.Column("col" + i, {
                         label: new sap.ui.commons.Label({
                             text: "{mTitle>/OrderID}"
                         }),
                         template: cell
                     });
                 }
+                
+                oColumn.push(column);
+                console.log(oColumn)
+
                 oTable.addColumn(oColumn);
                 oTable.bindRows("mDetails>/");
 
