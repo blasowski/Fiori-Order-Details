@@ -28,19 +28,11 @@
                     <Text text="{mTitle>/OrderID}"></Text>
                     <Text text="{mTitle>/CustomerID}"></Text>
                 </u:snappedContent>
-
             </u:ObjectPageDynamicHeaderTitle>
         </u:ObjectPageDynamicHeaderContent>
         <content>
-            <!-- <Table alternateRowColors="true" id="detailTable">
-            </Table> -->
-            <table:Table id="detailTable" selectionMode="None" visibleRowCount="1">
-            <!-- <table:columns>
-            <table:Column><Label text="{mTitle>/OrderID}"></Label><table:template><Text text="{mDetails>ProductID}"></Text></table:template></table:Column>
-            <table:Column><Label text="{mTitle>/OrderID}"></Label><table:template><Text text="{mDetails>ProductID}"></Text></table:template></table:Column>
-            <table:Column><Label text="{mTitle>/OrderID}"></Label><table:template><Text text="{mDetails>ProductID}"></Text></table:template></table:Column>
-            </table:columns> -->
-            </table:Table>
+            <Table alternateRowColors="true" id="detailTable">
+            </Table>
         </content>
     </Page>
 </mvc:View>

@@ -13,59 +13,28 @@ sap.ui.define([
                 this.getOwnerComponent().getRouter().getRoute("detail").attachPatternMatched(this._onRouteMatched, this);
 
                 var oTable = this.getView().byId("detailTable");
-
-                var aCells = [];
                 for (var i = 0; i < 3; i++) {
-                    var cells = new sap.ui.commons.TextView({
-                        text: "{mDetails>UnitPrice}"
+                    var oColumn = new sap.m.Column("col" + i, {
+                        width: "1em",
+                        header: new sap.m.Label({
+                            text: "{mDetails>/ProductID}"
+                        })
                     });
-                    aCells.push(cells);
+                    oTable.addColumn(oColumn);
                 }
-                console.log(aCells);
-
-                var oColumn = new sap.ui.table.Column("col" + i, {
-                    label: new sap.ui.commons.Label({
-                        text: "{mTitle>/OrderID}"
-                    }),
-                    template: aCells
+                var oCell = [];
+                for (var i = 0; i < 3; i++) {
+                    if (i === 0) {
+                        var cell1 = new sap.m.Text({
+                            text: "{mDetails>/ProductID}"
+                        });
+                    }
+                    oCell.push(cell1);
+                }
+                var aColList = new sap.m.ColumnListItem("aColList", {
+                    cells: oCell
                 });
-                oTable.addColumn(oColumn);
-                oTable.bindRows("mDetails>/");
-
-                // var oTable = this.getView().byId("detailTable");
-                // var s = 3
-                // for (var i = 0; i < s; i++) {
-                //     var oColumn = new sap.ui.table.Column("col" + i, {
-                //         label: new sap.ui.commons.Label({
-                //             text: "{mDetails>ProductID}"
-                //         }),
-                //         template: new sap.ui.commons.TextView({
-                //             text: "{mDetails>UnitPrice}"
-                //         })
-                //     });
-                //     oTable.addColumn(oColumn);
-                // }
-                // oTable.bindRows("mDetails>/");
-
-                // var oCell = [];
-                // var cell = new sap.m.Text({
-                //     text: "{mDetails>ProductID}"
-                // });
-                // // }
-
-                // for (var i = 0; i < s; i++) {
-                //     oCell.push(cell);
-                // }
-
-                // var aRowList = new sap.ui.table.Row().insertCell();
-                // console.log(aRowList);
-
-                // oTable.bindItems("mDetails>/", aRowList);
-
-                // var aColList = new sap.m.ColumnListItem("aColList", {
-                //     cells: oCell
-                // });
-                // oTable.bindItems("mDetails>/", aColList);
+                oTable.bindItems("mDetails>/", aColList);
             },
 
             _onRouteMatched: function (oEvent) {
@@ -80,15 +49,18 @@ sap.ui.define([
                         "$expand": "Product"
                     },
                     success: function (oData) {
-                        oStore.setProperty("/", oData.results);
+                        oStore.setProperty("/Product", oData.results);
                         that.getView().setModel(oStore, "mDetails");
-                        BusyIndicator.hide();
+                        console.log(oData);
+                        console.log(oData.results);
+                        console.log(oData.results[1]);
                     },
                 });
                 oModel.read("/Orders(" + oArgs.OrderID + ")", {
                     success: function (oData) {
                         oStore2.setProperty("/", oData);
                         that.getView().setModel(oStore2, "mTitle");
+                        BusyIndicator.hide();
                     },
                 });
             },
