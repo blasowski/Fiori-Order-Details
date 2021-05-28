@@ -16,26 +16,19 @@ sap.ui.define([
 
                 var aCells = [];
                 for (var i = 0; i < 3; i++) {
-                    var cell = new sap.ui.commons.TextView({
+                    var cells = new sap.ui.commons.TextView({
                         text: "{mDetails>UnitPrice}"
                     });
-                    aCells.push(cell);
+                    aCells.push(cells);
                 }
-                console.log(aCells)
+                console.log(aCells);
 
-                var oColumn = [];
-                for (var i = 0; i < 3; i++) {
-                    var column = new sap.ui.table.Column("col" + i, {
-                        label: new sap.ui.commons.Label({
-                            text: "{mTitle>/OrderID}"
-                        }),
-                        template: cell
-                    });
-                }
-                
-                oColumn.push(column);
-                console.log(oColumn)
-
+                var oColumn = new sap.ui.table.Column("col" + i, {
+                    label: new sap.ui.commons.Label({
+                        text: "{mTitle>/OrderID}"
+                    }),
+                    template: aCells
+                });
                 oTable.addColumn(oColumn);
                 oTable.bindRows("mDetails>/");
 
@@ -53,7 +46,6 @@ sap.ui.define([
                 //     oTable.addColumn(oColumn);
                 // }
                 // oTable.bindRows("mDetails>/");
-
 
                 // var oCell = [];
                 // var cell = new sap.m.Text({
