@@ -12,6 +12,9 @@ sap.ui.define([
             onInit: function () {
                 this.getOwnerComponent().getRouter().getRoute("detail").attachPatternMatched(this._onRouteMatched, this);
 
+                var oData = this.getView().getModel().getData();
+                console.log(oData);
+
                 var oTable = this.getView().byId("detailTable");
                 for (var i = 0; i < 3; i++) {
                     var oColumn = new sap.m.Column("col" + i, {
@@ -49,7 +52,7 @@ sap.ui.define([
                         "$expand": "Product"
                     },
                     success: function (oData) {
-                        oStore.setProperty("/Product", oData.results);
+                        oStore.setProperty("/", oData.results);
                         that.getView().setModel(oStore, "mDetails");
                         console.log(oData);
                         console.log(oData.results);
