@@ -53,7 +53,7 @@
             <content>
                 <Table showSeparators="None" id="mainTable" items="{mMain>/Orders}" alternateRowColors="true" class="sapUiSizeCompact" width="100%" growing="true" growingThreshold="20" updateStarted="onGrowingStarted">
                     <columns>
-                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" styleClass="gray" width="10%">
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" styleClass="gray" width="10%" >
                             <Text text="#" />
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
@@ -70,7 +70,7 @@
                         </Column>
                     </columns>
                     <items>
-                        <ColumnListItem type="Navigation" press="onPress">
+                        <ColumnListItem type="Navigation" press="onPress" >
                             <cells>
                                 <ObjectIdentifier title="{mMain>OrderID}" text="" class="sapUiTinyMarginTopBottom" />
                                 <Text text="{mMain>CustomerID}" />

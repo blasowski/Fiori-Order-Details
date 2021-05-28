@@ -1,6 +1,7 @@
 <mvc:View xmlns:core="sap.ui.core" controllerName="sap.btp.details.controller.Detail"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:l="sap.ui.layout"
+    xmlns:table="sap.ui.table"
     xmlns:u="sap.uxap"
     xmlns="sap.m">
     <Page class="sapUiContentPadding" showNavButton="false" showHeader="false" showFooter="false" id="detailPage">
@@ -17,7 +18,7 @@
                     </Breadcrumbs>
                 </u:breadcrumbs>
                 <u:expandedContent>
-                    <l:HorizontalLayout class="sapUiContentPadding" >
+                    <l:HorizontalLayout class="sapUiContentPadding">
                         <Input value="{mTitle>/OrderID}"></Input>
                         <Input value="{mTitle>/CustomerID}"></Input>
                         <Input value="{mTitle>/OrderDate}"></Input>
@@ -31,8 +32,15 @@
             </u:ObjectPageDynamicHeaderTitle>
         </u:ObjectPageDynamicHeaderContent>
         <content>
-            <Table alternateRowColors="true" id="detailTable" inset="false" growing="true" growingScrollToLoad="true">
-            </Table>
-            </content>
+            <!-- <Table alternateRowColors="true" id="detailTable">
+            </Table> -->
+            <table:Table id="detailTable" selectionMode="None" visibleRowCount="1">
+            <!-- <table:columns>
+            <table:Column><Label text="{mTitle>/OrderID}"></Label><table:template><Text text="{mDetails>ProductID}"></Text></table:template></table:Column>
+            <table:Column><Label text="{mTitle>/OrderID}"></Label><table:template><Text text="{mDetails>ProductID}"></Text></table:template></table:Column>
+            <table:Column><Label text="{mTitle>/OrderID}"></Label><table:template><Text text="{mDetails>ProductID}"></Text></table:template></table:Column>
+            </table:columns> -->
+            </table:Table>
+        </content>
     </Page>
 </mvc:View>

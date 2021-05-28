@@ -1,10 +1,10 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
-    "sap/ui/core/routing/History",
-    "sap/ui/core/BusyIndicator",
-    "sap/ui/model/odata/v2/ODataModel",
-    "sap/ui/model/json/JSONModel"
-],
+        "sap/ui/core/mvc/Controller",
+        "sap/ui/core/routing/History",
+        "sap/ui/core/BusyIndicator",
+        "sap/ui/model/odata/v2/ODataModel",
+        "sap/ui/model/json/JSONModel"
+    ],
     function (Controller, History, BusyIndicator, ODataModel, JSONModel) {
         "use strict";
 
@@ -13,29 +13,71 @@ sap.ui.define([
                 this.getOwnerComponent().getRouter().getRoute("detail").attachPatternMatched(this._onRouteMatched, this);
 
                 var oTable = this.getView().byId("detailTable");
-                var s = 999
-                for (var i = 0; i < s; i++) {
-                    var oColumn = new sap.m.Column("col" + i, {
-                        header: new sap.m.Label({
-                            text: "/ProductID"
-                        })
+
+                var aCells = [];
+                for (var i = 0; i < 3; i++) {
+                    var cell = new sap.ui.commons.TextView({
+                        text: "{mDetails>UnitPrice}"
                     });
-                    oTable.addColumn(oColumn);
+                    aCells.push(cell);
                 }
-                var oCell = [];
-                for (i = 0; i < s; i++) {
-                    if (i === 0) {
-                        var cell1 = new sap.m.Text({
-                            text: "/UnitPrice"
-                        });
-                    }
-                    oCell.push(cell1);
+                // aCells.forEach(function() {
+                //     var n = 1;
+                //     var oColumn = new sap.ui.table.Column("col" + n++, {
+                //         label: new sap.ui.commons.Label({
+                //             text: "{mTitle>/OrderID}"
+                //         }),
+                //         template: cell
+                //     });
+                //     oTable.addColumn(oColumn);
+                // });
+
+                for (var i = 0; i < 3; i++) {
+                    var oColumn = new sap.ui.table.Column("col" + i, {
+                        label: new sap.ui.commons.Label({
+                            text: "{mTitle>/OrderID}"
+                        }),
+                        template: cell
+                    });
                 }
-                var aColList = new sap.m.ColumnListItem("aColList", {
-                    cells: oCell
-                 });
-                 oTable.bindItems("mDetails>", aColList);
-                 console.log()
+                oTable.addColumn(oColumn);
+                oTable.bindRows("mDetails>/");
+
+                // var oTable = this.getView().byId("detailTable");
+                // var s = 3
+                // for (var i = 0; i < s; i++) {
+                //     var oColumn = new sap.ui.table.Column("col" + i, {
+                //         label: new sap.ui.commons.Label({
+                //             text: "{mDetails>ProductID}"
+                //         }),
+                //         template: new sap.ui.commons.TextView({
+                //             text: "{mDetails>UnitPrice}"
+                //         })
+                //     });
+                //     oTable.addColumn(oColumn);
+                // }
+                // oTable.bindRows("mDetails>/");
+
+
+                // var oCell = [];
+                // var cell = new sap.m.Text({
+                //     text: "{mDetails>ProductID}"
+                // });
+                // // }
+
+                // for (var i = 0; i < s; i++) {
+                //     oCell.push(cell);
+                // }
+
+                // var aRowList = new sap.ui.table.Row().insertCell();
+                // console.log(aRowList);
+
+                // oTable.bindItems("mDetails>/", aRowList);
+
+                // var aColList = new sap.m.ColumnListItem("aColList", {
+                //     cells: oCell
+                // });
+                // oTable.bindItems("mDetails>/", aColList);
             },
 
             _onRouteMatched: function (oEvent) {
@@ -46,7 +88,9 @@ sap.ui.define([
                 var oArgs = oEvent.getParameter("arguments");
                 var that = this;
                 oModel.read("/Orders(" + oArgs.OrderID + ")/Order_Details", {
-                    urlParameters: { "$expand": "Product" },
+                    urlParameters: {
+                        "$expand": "Product"
+                    },
                     success: function (oData) {
                         oStore.setProperty("/", oData.results);
                         that.getView().setModel(oStore, "mDetails");

@@ -16,7 +16,9 @@ sap.ui.define([
             var oStore = new JSONModel();
             var that = this;
             oModel.read('/Orders', {
-                urlParameters: { "$expand": "Order_Details" },
+                urlParameters: {
+                    "$expand": "Order_Details"
+                },
                 success: function (oData) {
                     oStore.setProperty("/Orders", oData.results);
                     that.getView().setModel(oStore, "mMain");
@@ -30,22 +32,38 @@ sap.ui.define([
             // ComboBox
             var aComboBoxKeys = this.getView().byId("fbComboBox").getSelectedKeys();
             for (var i = 0; i < aComboBoxKeys.length; i++) {
-                aSearchFilters.push(new Filter({ path: "OrderID", operator: FilterOperator.EQ, value1: aComboBoxKeys[i] }, true));
+                aSearchFilters.push(new Filter({
+                    path: "OrderID",
+                    operator: FilterOperator.EQ,
+                    value1: aComboBoxKeys[i]
+                }, true));
             };
             // Customer ID Filter
             var aCustomerFilter = this.getView().byId("fbCustomerID").getProperty("value");
             if (aCustomerFilter.length > 0) {
-                aSearchFilters.push(new Filter({ path: "CustomerID", operator: FilterOperator.Contains, value1: aCustomerFilter }, true));
+                aSearchFilters.push(new Filter({
+                    path: "CustomerID",
+                    operator: FilterOperator.Contains,
+                    value1: aCustomerFilter
+                }, true));
             };
             // Shiping City Filter
             var aShipCityFilter = this.getView().byId("fbShipCity").getProperty("value");
             if (aShipCityFilter.length > 0) {
-                aSearchFilters.push(new Filter({ path: "ShipCity", operator: FilterOperator.Contains, value1: aShipCityFilter }, true));
+                aSearchFilters.push(new Filter({
+                    path: "ShipCity",
+                    operator: FilterOperator.Contains,
+                    value1: aShipCityFilter
+                }, true));
             };
             // Shipping Country Filter
             var aShipCountryFilter = this.getView().byId("fbShipCountry").getProperty("value");
             if (aShipCountryFilter.length > 0) {
-                aSearchFilters.push(new Filter({ path: "ShipCountry", operator: FilterOperator.Contains, value1: aShipCountryFilter }, true));
+                aSearchFilters.push(new Filter({
+                    path: "ShipCountry",
+                    operator: FilterOperator.Contains,
+                    value1: aShipCountryFilter
+                }, true));
             };
             var oTable = this.getView().byId("mainTable");
             var oBinding = oTable.getBinding("items");
