@@ -4,9 +4,9 @@
     xmlns:table="sap.ui.table"
     xmlns:u="sap.uxap"
     xmlns="sap.m">
-    <Page class="sapUiContentPadding" showNavButton="false" showHeader="false" showFooter="false" id="detailPage">
+    <Page class="sapUiContentPadding" showNavButton="true" showHeader="true" showFooter="false" id="detailPage" navButtonPress="onNavBack" title="Northwind Order Details">
 
-        <u:ObjectPageDynamicHeaderContent pinnable="true">
+        <u:ObjectPageDynamicHeaderContent pinnable="false">
             <u:ObjectPageDynamicHeaderTitle >
                 <u:heading>
                     <Title text="Order N.{mTitle>/OrderID}"></Title>
@@ -18,21 +18,26 @@
                     </Breadcrumbs>
                 </u:breadcrumbs>
                 <u:expandedContent>
-                    <l:HorizontalLayout class="sapUiContentPadding">
-                        <Input value="{mTitle>/OrderID}"></Input>
-                        <Input value="{mTitle>/CustomerID}"></Input>
-                        <Input value="{mTitle>/OrderDate}"></Input>
-                    </l:HorizontalLayout>
-                </u:expandedContent>
-                <u:snappedContent>
-                    <Text text="{mTitle>/OrderID}"></Text>
-                    <Text text="{mTitle>/CustomerID}"></Text>
-                </u:snappedContent>
-            </u:ObjectPageDynamicHeaderTitle>
-        </u:ObjectPageDynamicHeaderContent>
-        <content>
-            <Table alternateRowColors="true" id="detailTable">
-            </Table>
-        </content>
-    </Page>
+                    <HBox justifyContent="Center"> 
+                    <items>
+                    <Input value="{mTitle>/OrderID}"></Input>
+                    <Input value="{mTitle>/CustomerID}"></Input>
+                    <Input value="{path: 'mTitle>/OrderDate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd/MM/yyyy' }}" />
+                    </items>
+                </HBox>
+                <HBox justifyContent="Center" width="100%" displayInline="true">
+                <items>
+                <Table id="detailTable" popinLayout="GridLarge" enableBusyIndicator="true">
+                </Table>
+                </items>
+                </HBox>
+            </u:expandedContent>
+            <u:snappedContent>
+            </u:snappedContent>
+
+        </u:ObjectPageDynamicHeaderTitle>
+    </u:ObjectPageDynamicHeaderContent>
+    <content>
+    </content>
+</Page>
 </mvc:View>

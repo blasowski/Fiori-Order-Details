@@ -11,33 +11,6 @@ sap.ui.define([
         return Controller.extend("sap.btp.details.controller.Detail", {
             onInit: function () {
                 this.getOwnerComponent().getRouter().getRoute("detail").attachPatternMatched(this._onRouteMatched, this);
-
-                var oData = this.getView().getModel().getData();
-                console.log(oData);
-
-                var oTable = this.getView().byId("detailTable");
-                for (var i = 0; i < 3; i++) {
-                    var oColumn = new sap.m.Column("col" + i, {
-                        width: "1em",
-                        header: new sap.m.Label({
-                            text: "{mDetails>/ProductID}"
-                        })
-                    });
-                    oTable.addColumn(oColumn);
-                }
-                var oCell = [];
-                for (var i = 0; i < 3; i++) {
-                    if (i === 0) {
-                        var cell1 = new sap.m.Text({
-                            text: "{mDetails>/ProductID}"
-                        });
-                    }
-                    oCell.push(cell1);
-                }
-                var aColList = new sap.m.ColumnListItem("aColList", {
-                    cells: oCell
-                });
-                oTable.bindItems("mDetails>/", aColList);
             },
 
             _onRouteMatched: function (oEvent) {
@@ -54,9 +27,7 @@ sap.ui.define([
                     success: function (oData) {
                         oStore.setProperty("/", oData.results);
                         that.getView().setModel(oStore, "mDetails");
-                        console.log(oData);
-                        console.log(oData.results);
-                        console.log(oData.results[1]);
+                        that._onTableLoaded();
                     },
                 });
                 oModel.read("/Orders(" + oArgs.OrderID + ")", {
@@ -68,7 +39,41 @@ sap.ui.define([
                 });
             },
 
+            _onTableLoaded: function () {
+                var oData = [];
+                oData.push(this.getView().getModel("mDetails").getData());
+                var oTable = this.getView().byId("detailTable");
+                    // oTable.removeAllColumns();
+                    // oTable.removeAllItems();
+                for (var i = 0; i < oData[0].length; i++) {
+                    var oColumn = new sap.m.Column("col" + i, {
+                        header: new sap.m.Label({
+                            text: "#" + oData[0][i].ProductID
+                        })
+                    });
+                    oTable.addColumn(oColumn);
+                }
+                var oCell = [];
+                for (var i = 0; i < oData[0].length; i++) {
+                    var cell = new sap.m.Text({
+                        text: ((oData[0][i].UnitPrice * 100) / 100).toFixed(2) + " EUR"
+                    });
+                    oCell.push(cell);
+                }
+                var aColList = new sap.m.ColumnListItem("aColList", {
+                    cells: oCell
+                });
+                oTable.bindItems("mDetails>/", aColList);
+
+                for (var i = 0; i < oTable["mAggregations"]["items"].length; i++) {
+                    oTable.removeItem(i);
+                }
+            },
+
             onNavBack: function () {
+                var oTable = this.getView().byId("detailTable");
+                oTable.removeAllColumns();
+                oTable.removeAllItems();
                 var oHistory = History.getInstance();
                 var sPreviousHash = oHistory.getPreviousHash();
                 if (sPreviousHash !== undefined) {

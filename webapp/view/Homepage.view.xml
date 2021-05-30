@@ -5,55 +5,55 @@
     xmlns:u="sap.uxap"
     xmlns="sap.m">
     <App id="app">
-        <Page class="sapUiContentPadding" showNavButton="false" showHeader="false" showSubHeader="false" showFooter="false" id="mainPage" contentOnlyBusy="true">
-        <u:ObjectPageDynamicHeaderContent pinnable="true">
-            <u:ObjectPageDynamicHeaderTitle ><u:heading><Title text="Northwind Order Details"></Title></u:heading>
-                <u:snappedContent>
-                </u:snappedContent>
-                <u:expandedContent>
-                    <fb:FilterBar id="filterBar" useToolbar="false" showRestoreOnFB="false" showGoOnFB="false" showClearOnFB="false">
-                        <fb:filterGroupItems>
-                            <fb:FilterGroupItem visibleInFilterBar="true" name="Filter A" groupName="Main Filters" label="Order ID">
-                                <fb:control>
-                                    <MultiComboBox selectionFinish="onSearch" selectionChange="onSearch" selectedKeys="{mMain>/OrderID}" placeholder="Order ID..." items="{mMain>/Orders}" id="fbComboBox">
-                                        <core:Item key="{mMain>OrderID}" text="{mMain>OrderID}" />
-                                    </MultiComboBox>
-                                </fb:control>
-                            </fb:FilterGroupItem>
-                            <fb:FilterGroupItem visibleInFilterBar="true" name="Filter B" groupName="Main Filters" label="Customer ID">
-                                <fb:control>
-                                    <SearchField search="onSearch" placeholder="Customer ID..." id="fbCustomerID"/>
-                                </fb:control>
-                            </fb:FilterGroupItem>
-                            <fb:FilterGroupItem visibleInFilterBar="true" name="Filter F" groupName="Main Filters" label="Ship City">
-                                <fb:control>
-                                    <SearchField search="onSearch" placeholder="City..." id="fbShipCity" />
-                                </fb:control>
-                            </fb:FilterGroupItem>
-                            <fb:FilterGroupItem visibleInFilterBar="true" name="Filter G" groupName="Main Filters" label="Ship Country">
-                                <fb:control>
-                                    <SearchField search="onSearch" placeholder="Country..." id="fbShipCountry" />
-                                </fb:control>
-                            </fb:FilterGroupItem>
-                        </fb:filterGroupItems>
-                    </fb:FilterBar>
-                </u:expandedContent>
+        <Page class="sapUiContentPadding" showNavButton="false" showHeader="true" showSubHeader="false" showFooter="false" id="mainPage" contentOnlyBusy="true" title="Northwind Order Details">
+            <u:ObjectPageDynamicHeaderContent pinnable="false">
+                <u:ObjectPageDynamicHeaderTitle >
+                    <u:snappedContent>
+                    </u:snappedContent>
+                    <u:expandedContent>
+                        <fb:FilterBar id="filterBar" useToolbar="false" showRestoreOnFB="false" showGoOnFB="false" showClearOnFB="false">
+                            <fb:filterGroupItems>
+                                <fb:FilterGroupItem visibleInFilterBar="true" name="Filter A" groupName="Main Filters" label="Order ID">
+                                    <fb:control>
+                                        <MultiComboBox selectionFinish="onSearch" selectionChange="onSearch" selectedKeys="{mMain>/OrderID}" placeholder="Order ID..." items="{mMain>/Orders}" id="fbComboBox">
+                                            <core:Item key="{mMain>OrderID}" text="{mMain>OrderID}" />
+                                        </MultiComboBox>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                                <fb:FilterGroupItem visibleInFilterBar="true" name="Filter B" groupName="Main Filters" label="Customer ID">
+                                    <fb:control>
+                                        <SearchField search="onSearch" placeholder="Customer ID..." id="fbCustomerID"/>
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                                <fb:FilterGroupItem visibleInFilterBar="true" name="Filter F" groupName="Main Filters" label="Ship City">
+                                    <fb:control>
+                                        <SearchField search="onSearch" placeholder="City..." id="fbShipCity" />
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                                <fb:FilterGroupItem visibleInFilterBar="true" name="Filter G" groupName="Main Filters" label="Ship Country">
+                                    <fb:control>
+                                        <SearchField search="onSearch" placeholder="Country..." id="fbShipCountry" />
+                                    </fb:control>
+                                </fb:FilterGroupItem>
+                            </fb:filterGroupItems>
+                        </fb:FilterBar>
+                    </u:expandedContent>
 
-                <u:actions>
-                    <u:ObjectPageHeaderActionButton text="Clear" type="Emphasized" hideText="false" press="onClear" />
-                    <u:ObjectPageHeaderActionButton type="Transparent" text="Reset" hideText="false" hideIcon="true" press="onReset" />
-                </u:actions>
-                <u:navigationActions>
-                    <u:ObjectPageHeaderActionButton icon="sap-icon://slim-arrow-up" type="Transparent" tooltip="slim-arrow-up"/>
-                    <u:ObjectPageHeaderActionButton icon="sap-icon://slim-arrow-down" type="Transparent" tooltip="slim-arrow-down"/>
-                </u:navigationActions>
-            </u:ObjectPageDynamicHeaderTitle>
+                    <!-- <u:actions>
+                        <u:ObjectPageHeaderActionButton text="Clear" type="Emphasized" hideText="false" press="onClear" />
+                        <u:ObjectPageHeaderActionButton type="Transparent" text="Reset" hideText="false" hideIcon="true" press="onReset" />
+                    </u:actions>
+                    <u:navigationActions>
+                        <u:ObjectPageHeaderActionButton icon="sap-icon://slim-arrow-up" type="Transparent" tooltip="slim-arrow-up"/>
+                        <u:ObjectPageHeaderActionButton icon="sap-icon://slim-arrow-down" type="Transparent" tooltip="slim-arrow-down"/>
+                    </u:navigationActions> -->
+                </u:ObjectPageDynamicHeaderTitle>
             </u:ObjectPageDynamicHeaderContent>
 
             <content>
                 <Table showSeparators="None" id="mainTable" items="{mMain>/Orders}" alternateRowColors="true" class="sapUiSizeCompact" width="100%" growing="true" growingThreshold="20" updateStarted="onGrowingStarted">
                     <columns>
-                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" styleClass="gray" width="10%" >
+                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" styleClass="gray" width="10%">
                             <Text text="#" />
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
@@ -70,7 +70,7 @@
                         </Column>
                     </columns>
                     <items>
-                        <ColumnListItem type="Navigation" press="onPress" >
+                        <ColumnListItem type="Navigation" press="onPress">
                             <cells>
                                 <ObjectIdentifier title="{mMain>OrderID}" text="" class="sapUiTinyMarginTopBottom" />
                                 <Text text="{mMain>CustomerID}" />
