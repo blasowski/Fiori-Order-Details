@@ -91,12 +91,23 @@
         {
           "name": "homepage",
           "pattern": "",
-          "target": ["TargetHomepage"]
+          "target": [
+            "TargetHomepage"
+          ]
         },
         {
           "name": "detail",
           "pattern": "Detail/{OrderID}",
-          "target": ["TargetDetail"]
+          "target": [
+            "TargetDetail"
+          ]
+        },
+        {
+          "name": "product",
+          "pattern": "Detail/{OrderID}/{ProductID}",
+          "target": [
+            "TargetProduct"
+          ]
         }
       ],
       "targets": {
@@ -112,6 +123,12 @@
           "transition": "slide",
           "clearControlAggregation": false,
           "viewName": "Detail"
+        },
+        "TargetProduct": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewName": "Product"
         }
       }
     }

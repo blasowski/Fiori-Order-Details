@@ -1,0 +1,14 @@
+<mvc:View controllerName="sap.btp.details.controller.Product"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:f="sap.ui.layout.form"
+	xmlns="sap.m">
+	<Page title="Northwind Orders Details" class="sapUiContentPadding" showNavButton="true" navButtonPress="onNavBack" showHeader="true" showFooter="true" id="productPage">
+		<footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button id="edit" text="Edit" enabled="true" press="onEditPress" icon="sap-icon://edit" />
+			</OverflowToolbar>
+		</footer>
+	</Page>
+</mvc:View>

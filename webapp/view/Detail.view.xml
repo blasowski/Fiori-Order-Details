@@ -18,7 +18,7 @@
                     </Breadcrumbs>
                 </u:breadcrumbs>
                 <u:expandedContent>
-                    <HBox justifyContent="Center" id="testy"> 
+                    <HBox justifyContent="Center"> 
                     <items>
                     <Input value="{Price>/0/0}"></Input>
                     <Input value="{Price>/0/1}"></Input>
@@ -39,6 +39,32 @@
         </u:ObjectPageDynamicHeaderTitle>
     </u:ObjectPageDynamicHeaderContent>
     <content>
+            <Table id="suppliersTable" items="{path : 'details>/'}" alternateRowColors="true">
+            <columns>
+                <Column minScreenWidth="Tablet" hAlign="Center" styleClass="gray">
+                    <Text text="ID" />
+                </Column>
+                <Column minScreenWidth="Tablet" width="75%">
+                    <Text text="Product Name" />
+                </Column>
+                <Column minScreenWidth="Tablet">
+                    <Text text="Price" />
+                </Column>
+                <Column minScreenWidth="Tablet">
+                    <Text text="Stock" />
+                </Column>
+            </columns>
+            <items>
+                <ColumnListItem type="Navigation" press="onPress">
+                    <cells>
+                        <ObjectIdentifier text="{details>Product/ProductID}" />
+                        <ObjectIdentifier text="{details>Product/ProductName}" />
+                        <ObjectIdentifier text="{= ((${details>UnitPrice} * 100) / 100).toFixed(2) } EUR" />
+                        <ObjectIdentifier text="{details>Product/UnitsInStock}" />
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
     </content>
 </Page>
 </mvc:View>

@@ -1,0 +1,41 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns="sap.m">
+    <VBox class="sapUiSmallMargin">
+        <f:Form id="formDisplay" editable="false">
+            <f:title>
+                <core:Title text="{products>/Product/ProductName}" />
+            </f:title>
+            <f:layout>
+                <f:ResponsiveGridLayout labelSpanXL="1" labelSpanL="2" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false" />
+            </f:layout>
+            <f:formContainers>
+                <f:FormContainer>
+                    <f:formElements>
+                        <f:FormElement label="Product ID">
+                            <f:fields>
+                                <Text text="{products>/ProductID}" id="nameText" />
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="Product Name">
+                            <f:fields>
+                                <Text text="{products>/Product/ProductName}" />
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="Unit Price">
+                            <f:fields>
+                                <Text text="{= ((${products>/Product/UnitPrice} * 100) / 100).toFixed(2) }" id="UnitPriceDefault" />
+                            </f:fields>
+                        </f:FormElement>
+                        <f:FormElement label="Units In Stock">
+                            <f:fields>
+                                <Text text="{products>/Product/UnitsInStock}" id="UnitStockDefault" />
+                            </f:fields>
+                        </f:FormElement>
+                    </f:formElements>
+                </f:FormContainer>
+            </f:formContainers>
+        </f:Form>
+    </VBox>
+</core:FragmentDefinition>

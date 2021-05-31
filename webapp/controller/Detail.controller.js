@@ -25,7 +25,6 @@ sap.ui.define([
                         "$expand": "Product"
                     },
                     success: function (oData) {
-                        var oJSON = [{}];
                         oStore.setProperty("/", oData.results);
                         that.getView().setModel(oStore, "details");
                         that._onTableLoaded();
@@ -45,26 +44,21 @@ sap.ui.define([
                 var oStore2 = new JSONModel();
                 var oData = [];
                 var oJSON = [{}];
-
                 oData.push(this.getView().getModel("details").getData());
-
                 var oTable = this.getView().byId("detailTable");
                 oTable.removeAllColumns();
                 oTable.removeAllItems();
-
                 for (var i = 0; i < oData[0].length; i++) {
                     var oProduct = oData[0][i].ProductID;
                     var oPrice = oData[0][i].UnitPrice;
                     oJSON[0][oProduct] = oPrice;
                 }
-
                 var aKeys = []
                 aKeys.push(Object.keys(oJSON[0]))
                 var aValues = []
                 aValues.push(Object.values(oJSON[0]))
-                
                 oStore.setProperty("/", aKeys[0]);
-                oStore2.setProperty("/",  aValues)
+                oStore2.setProperty("/", aValues)
                 this.getView().setModel(oStore, "Product");
                 this.getView().setModel(oStore2, "Price");
                 for (var i = 0; i < oData[0].length; i++) {
@@ -88,6 +82,17 @@ sap.ui.define([
                 oTable.bindItems("Price>/", aColList);
             },
 
+            onPress: function (oEvent) {
+                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                var oModel = oEvent.getSource();
+                var selectedOrderID = oModel.getBindingContext("details").getProperty("OrderID");
+                var selectedProductID = oModel.getBindingContext("details").getProperty("ProductID");
+                oRouter.navTo("product", {
+                    OrderID: selectedOrderID,
+                    ProductID: selectedProductID,
+                });
+            },
+            
             onNavBack: function () {
                 var oTableRem = this.getView().byId("detailTable");
                 oTableRem.removeAllColumns();
