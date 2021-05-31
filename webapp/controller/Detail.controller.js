@@ -41,13 +41,24 @@ sap.ui.define([
 
             _onTableLoaded: function () {
                 var oData = [];
+                var oJSON = [{
+                    value: ''
+                }];
                 oData.push(this.getView().getModel("details").getData());
                 var oTable = this.getView().byId("detailTable");
-                console.log();
+
+                for (var i = 0; i < oData[0].length; i++) {
+                var oProduct = oData[0][i].ProductID;
+                var oPrice = oData[0][i].UnitPrice;
+                oJSON[0][oProduct] = oPrice;
+                }
+
+                console.log(oJSON);
+
                 oTable.removeAllColumns();
                 oTable.removeAllItems();
                 for (var i = 0; i < oData[0].length; i++) {
-                    var oColumn = new sap.m.Column("col" + i, {
+                    var oColumn = new sap.m.Column( {
                         header: new sap.m.Label({
                             text: "No. " + oData[0][i].ProductID
                         })
@@ -65,10 +76,6 @@ sap.ui.define([
                     cells: oCell
                 });
                 oTable.bindItems("details>/", aColList);
-
-                for (var i = 0; i < oTable["mAggregations"]["items"].length; i++) {
-                    oTable.removeItem(i);
-                }
             },
 
             onNavBack: function () {
