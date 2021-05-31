@@ -47,9 +47,9 @@ sap.ui.define([
                 oTable.removeAllColumns();
                 oTable.removeAllItems();
                 for (var i = 0; i < oData[0].length; i++) {
-                    var oColumn = new sap.m.Column({
+                    var oColumn = new sap.m.Column("col" + i, {
                         header: new sap.m.Label({
-                            text: "#" + oData[0][i].ProductID
+                            text: "No. " + oData[0][i].ProductID
                         })
                     });
                     oTable.addColumn(oColumn);
