@@ -11,7 +11,7 @@
                     <u:snappedContent>
                     </u:snappedContent>
                     <u:expandedContent>
-                        <fb:FilterBar id="filterBar" useToolbar="false" showRestoreOnFB="false" showGoOnFB="false" showClearOnFB="false">
+                        <fb:FilterBar id="filterBar" useToolbar="false" showRestoreOnFB="true" showGoOnFB="false" showClearOnFB="true" reset="onReset" clear="onClear">
                             <fb:filterGroupItems>
                                 <fb:FilterGroupItem visibleInFilterBar="true" name="Filter A" groupName="Main Filters" label="Order ID">
                                     <fb:control>
