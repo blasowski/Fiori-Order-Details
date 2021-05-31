@@ -15,8 +15,8 @@
                             <fb:filterGroupItems>
                                 <fb:FilterGroupItem visibleInFilterBar="true" name="Filter A" groupName="Main Filters" label="Order ID">
                                     <fb:control>
-                                        <MultiComboBox selectionFinish="onSearch" selectionChange="onSearch" selectedKeys="{mMain>/OrderID}" placeholder="Order ID..." items="{mMain>/Orders}" id="fbComboBox">
-                                            <core:Item key="{mMain>OrderID}" text="{mMain>OrderID}" />
+                                        <MultiComboBox selectionFinish="onSearch" selectionChange="onSearch" selectedKeys="{orders>/OrderID}" placeholder="Order ID..." items="{orders>/Orders}" id="fbComboBox">
+                                            <core:Item key="{orders>OrderID}" text="{orders>OrderID}" />
                                         </MultiComboBox>
                                     </fb:control>
                                 </fb:FilterGroupItem>
@@ -51,7 +51,7 @@
             </u:ObjectPageDynamicHeaderContent>
 
             <content>
-                <Table showSeparators="None" id="mainTable" items="{mMain>/Orders}" alternateRowColors="true" class="sapUiSizeCompact" width="100%" growing="true" growingThreshold="20" updateStarted="onGrowingStarted">
+                <Table showSeparators="None" id="mainTable" items="{orders>/Orders}" alternateRowColors="true" class="sapUiSizeCompact" width="100%" growing="true" growingThreshold="20" updateStarted="onGrowingStarted">
                     <columns>
                         <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" styleClass="gray" width="10%">
                             <Text text="#" />
@@ -72,11 +72,11 @@
                     <items>
                         <ColumnListItem type="Navigation" press="onPress">
                             <cells>
-                                <ObjectIdentifier title="{mMain>OrderID}" text="" class="sapUiTinyMarginTopBottom" />
-                                <Text text="{mMain>CustomerID}" />
-                                <Text text="{path: 'mMain>OrderDate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd/MM/yyyy' }}" />
-                                <Text text="{mMain>ShipCity}" />
-                                <Text text="{mMain>ShipCountry}" />
+                                <ObjectIdentifier title="{orders>OrderID}" text="" class="sapUiTinyMarginTopBottom" />
+                                <Text text="{orders>CustomerID}" />
+                                <Text text="{path: 'orders>OrderDate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd/MM/yyyy' }}" />
+                                <Text text="{orders>ShipCity}" />
+                                <Text text="{orders>ShipCountry}" />
                             </cells>
                         </ColumnListItem>
                     </items>

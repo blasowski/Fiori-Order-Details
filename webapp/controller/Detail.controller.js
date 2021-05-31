@@ -26,14 +26,14 @@ sap.ui.define([
                     },
                     success: function (oData) {
                         oStore.setProperty("/", oData.results);
-                        that.getView().setModel(oStore, "mDetails");
+                        that.getView().setModel(oStore, "details");
                         that._onTableLoaded();
                     },
                 });
                 oModel.read("/Orders(" + oArgs.OrderID + ")", {
                     success: function (oData) {
                         oStore2.setProperty("/", oData);
-                        that.getView().setModel(oStore2, "mTitle");
+                        that.getView().setModel(oStore2, "orders");
                         BusyIndicator.hide();
                     },
                 });
@@ -41,12 +41,13 @@ sap.ui.define([
 
             _onTableLoaded: function () {
                 var oData = [];
-                oData.push(this.getView().getModel("mDetails").getData());
+                oData.push(this.getView().getModel("details").getData());
                 var oTable = this.getView().byId("detailTable");
-                    // oTable.removeAllColumns();
-                    // oTable.removeAllItems();
+                console.log();
+                oTable.removeAllColumns();
+                oTable.removeAllItems();
                 for (var i = 0; i < oData[0].length; i++) {
-                    var oColumn = new sap.m.Column("col" + i, {
+                    var oColumn = new sap.m.Column({
                         header: new sap.m.Label({
                             text: "#" + oData[0][i].ProductID
                         })
@@ -60,10 +61,10 @@ sap.ui.define([
                     });
                     oCell.push(cell);
                 }
-                var aColList = new sap.m.ColumnListItem("aColList", {
+                var aColList = new sap.m.ColumnListItem({
                     cells: oCell
                 });
-                oTable.bindItems("mDetails>/", aColList);
+                oTable.bindItems("details>/", aColList);
 
                 for (var i = 0; i < oTable["mAggregations"]["items"].length; i++) {
                     oTable.removeItem(i);
@@ -71,9 +72,9 @@ sap.ui.define([
             },
 
             onNavBack: function () {
-                var oTable = this.getView().byId("detailTable");
-                oTable.removeAllColumns();
-                oTable.removeAllItems();
+                var oTableRem = this.getView().byId("detailTable");
+                oTableRem.removeAllColumns();
+                oTableRem.removeAllItems();
                 var oHistory = History.getInstance();
                 var sPreviousHash = oHistory.getPreviousHash();
                 if (sPreviousHash !== undefined) {

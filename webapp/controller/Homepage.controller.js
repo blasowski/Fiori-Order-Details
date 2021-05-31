@@ -21,7 +21,7 @@ sap.ui.define([
                 },
                 success: function (oData) {
                     oStore.setProperty("/Orders", oData.results);
-                    that.getView().setModel(oStore, "mMain");
+                    that.getView().setModel(oStore, "orders");
                     BusyIndicator.hide();
                 }
             });
@@ -73,8 +73,8 @@ sap.ui.define([
         onPress: function (oEvent) {
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             var oModel = oEvent.getSource();
-            var selectedOrderID = oModel.getBindingContext("mMain").getProperty("OrderID");
-            var selectedProductID = oModel.getBindingContext("mMain").getProperty("ProductID");
+            var selectedOrderID = oModel.getBindingContext("orders").getProperty("OrderID");
+            var selectedProductID = oModel.getBindingContext("orders").getProperty("ProductID");
             oRouter.navTo("detail", {
                 OrderID: selectedOrderID,
                 ProductID: selectedProductID,
