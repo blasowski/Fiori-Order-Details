@@ -25,6 +25,7 @@ sap.ui.define([
                         "$expand": "Product"
                     },
                     success: function (oData) {
+                        var oJSON = [{}];
                         oStore.setProperty("/", oData.results);
                         that.getView().setModel(oStore, "details");
                         that._onTableLoaded();
@@ -40,27 +41,36 @@ sap.ui.define([
             },
 
             _onTableLoaded: function () {
+                var oStore = new JSONModel();
+                var oStore2 = new JSONModel();
                 var oData = [];
-                var oJSON = [{
-                    value: ''
-                }];
+                var oJSON = [{}];
+
                 oData.push(this.getView().getModel("details").getData());
+
                 var oTable = this.getView().byId("detailTable");
-
-                for (var i = 0; i < oData[0].length; i++) {
-                var oProduct = oData[0][i].ProductID;
-                var oPrice = oData[0][i].UnitPrice;
-                oJSON[0][oProduct] = oPrice;
-                }
-
-                console.log(oJSON);
-
                 oTable.removeAllColumns();
                 oTable.removeAllItems();
+
                 for (var i = 0; i < oData[0].length; i++) {
-                    var oColumn = new sap.m.Column( {
+                    var oProduct = oData[0][i].ProductID;
+                    var oPrice = oData[0][i].UnitPrice;
+                    oJSON[0][oProduct] = oPrice;
+                }
+
+                var aKeys = []
+                aKeys.push(Object.keys(oJSON[0]))
+                var aValues = []
+                aValues.push(Object.values(oJSON[0]))
+                
+                oStore.setProperty("/", aKeys[0]);
+                oStore2.setProperty("/",  aValues)
+                this.getView().setModel(oStore, "Product");
+                this.getView().setModel(oStore2, "Price");
+                for (var i = 0; i < oData[0].length; i++) {
+                    var oColumn = new sap.m.Column({
                         header: new sap.m.Label({
-                            text: "No. " + oData[0][i].ProductID
+                            text: "{Product>/" + [i] + "}"
                         })
                     });
                     oTable.addColumn(oColumn);
@@ -68,14 +78,14 @@ sap.ui.define([
                 var oCell = [];
                 for (var i = 0; i < oData[0].length; i++) {
                     var cell = new sap.m.Text({
-                        text: ((oData[0][i].UnitPrice * 100) / 100).toFixed(2) + " EUR"
+                        text: "{Price>/" + [0][i] + "}"
                     });
                     oCell.push(cell);
                 }
                 var aColList = new sap.m.ColumnListItem({
                     cells: oCell
                 });
-                oTable.bindItems("details>/", aColList);
+                oTable.bindItems("Price>/", aColList);
             },
 
             onNavBack: function () {
