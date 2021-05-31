@@ -20,9 +20,9 @@
                 <u:expandedContent>
                     <HBox justifyContent="Center" id="testy"> 
                     <items>
-                    <Input value="{Product>/0}"></Input>
-                    <Input value="{Product>/1}"></Input>
-                    <Input value="{Product>/2}"></Input>
+                    <Input value="{Price>/0/0}"></Input>
+                    <Input value="{Price>/0/1}"></Input>
+                    <Input value="{Price>/0/2}"></Input>
                     <!-- <Input value="{path: 'orders>/OrderDate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd/MM/yyyy' }}" /> -->
                     </items>
                 </HBox>

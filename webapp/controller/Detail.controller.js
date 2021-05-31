@@ -78,7 +78,7 @@ sap.ui.define([
                 var oCell = [];
                 for (var i = 0; i < oData[0].length; i++) {
                     var cell = new sap.m.Text({
-                        text: "{Price>/" + [0][i] + "}"
+                        text: "{Price>/0/" + [i] + "}"
                     });
                     oCell.push(cell);
                 }
