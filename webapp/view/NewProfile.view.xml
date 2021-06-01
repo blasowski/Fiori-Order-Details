@@ -53,25 +53,19 @@
                         <ToolbarSpacer />
                         <Label text="CEDI: " design="Bold" />
                         <Button icon="sap-icon://sys-add" type="Accept" press="addCEDI" />
-                        <Input value="15" type="Number" width="1%" />
+                        <Input value="8" type="Number" width="1%" id="CEDI" />
                         <Button icon="sap-icon://sys-minus" type="Reject" press="removeCEDI" />
                         <Label text="POS: " design="Bold" />
-                        <Button icon="sap-icon://sys-add" type="Accept" press="addCEDI" />
-                        <Input value="15" type="Number" width="1%" />
-                        <Button icon="sap-icon://sys-minus" type="Reject" press="removeCEDI" />
+                        <Button icon="sap-icon://sys-add" type="Accept" press="addPOS" />
+                        <Input value="8" type="Number" width="1%" id="POS" />
+                        <Button icon="sap-icon://sys-minus" type="Reject" press="removePOS" />
                     </Toolbar>
                 </u:ObjectPageSubSection>
-                <u:ObjectPageSubSection id="daysTable">
+                <u:ObjectPageSubSection>
                     <ScrollContainer vertical="false" horizontal="true">
                         <content>
-                            <Table id="table" popinLayout="GridLarge">
-                                <columns>
-                                    <Column >
-                                        <Text text="Name" />
-                                    </Column>
-                                    <Column >
-                                        <Text text="Description" />
-                                    </Column>
+                            <Table id="daysTable" popinLayout="GridLarge">
+                                <!-- <columns>
                                 </columns>
                                 <items>
                                     <ColumnListItem id="items">
@@ -80,7 +74,7 @@
                                             <Text text="{info>/description}" />
                                         </cells>
                                     </ColumnListItem>
-                                </items>
+                                </items> -->
                             </Table>
                         </content>
                     </ScrollContainer>
