@@ -1,0 +1,91 @@
+<mvc:View xmlns:core="sap.ui.core" controllerName="sap.btp.details.controller.NewProfile"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+    xmlns:t="sap.ui.table"
+    xmlns:u="sap.uxap"
+    xmlns="sap.m">
+    <u:ObjectPageLayout isChildPage="true">
+        <u:headerTitle>
+            <u:ObjectPageDynamicHeaderTitle >
+                <u:expandedHeading>
+                    <Title text="Northwind Order Details" />
+                </u:expandedHeading>
+                <u:snappedHeading>
+                    <FlexBox fitContainer="true" alignItems="Center">
+                        <Title text="Northwind Order Details" />
+                    </FlexBox>
+                </u:snappedHeading>
+                <u:expandedContent>
+                    <Text text="Profile Creation"/>
+                </u:expandedContent>
+                <u:snappedContent>
+                    <Text text="Profile Creation"/>
+                </u:snappedContent>
+                <u:breadcrumbs>
+                    <Breadcrumbs separatorStyle="GreaterThan">
+                        <links>
+                            <Link text="Home" press="onNavBack" />
+                            <Link text="New Profile" enabled="false" />
+                        </links>
+                    </Breadcrumbs>
+                </u:breadcrumbs>
+                <u:actions>
+                    <Button text="Save" type="Accept" />
+                    <Button text="Cancel" type="Reject" />
+                </u:actions>
+            </u:ObjectPageDynamicHeaderTitle>
+        </u:headerTitle>
+        <u:sections>
+            <u:ObjectPageSection title="Create New Profile">
+                <u:ObjectPageSubSection >
+                    <Toolbar style="Clear">
+                        <Input value="{info>/name}">
+                            <layoutData>
+                                <OverflowToolbarLayoutData shrinkable="false" minWidth = "5%" maxWidth="20%"/>
+                            </layoutData>
+                        </Input>
+                        <ToolbarSeparator />
+                        <Input value="{info>/description}">
+                            <layoutData>
+                                <OverflowToolbarLayoutData shrinkable="false" minWidth = "5%" maxWidth="20%"/>
+                            </layoutData>
+                        </Input>
+                        <ToolbarSpacer />
+                        <Label text="CEDI: " design="Bold" />
+                        <Button icon="sap-icon://sys-add" type="Accept" press="addCEDI" />
+                        <Input value="15" type="Number" width="1%" />
+                        <Button icon="sap-icon://sys-minus" type="Reject" press="removeCEDI" />
+                        <Label text="POS: " design="Bold" />
+                        <Button icon="sap-icon://sys-add" type="Accept" press="addCEDI" />
+                        <Input value="15" type="Number" width="1%" />
+                        <Button icon="sap-icon://sys-minus" type="Reject" press="removeCEDI" />
+                    </Toolbar>
+                </u:ObjectPageSubSection>
+                <u:ObjectPageSubSection id="daysTable">
+                    <ScrollContainer vertical="false" horizontal="true">
+                        <content>
+                            <Table id="table" popinLayout="GridLarge">
+                                <columns>
+                                    <Column >
+                                        <Text text="Name" />
+                                    </Column>
+                                    <Column >
+                                        <Text text="Description" />
+                                    </Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem id="items">
+                                        <cells>
+                                            <Text text="{info>/name}" />
+                                            <Text text="{info>/description}" />
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </content>
+                    </ScrollContainer>
+                </u:ObjectPageSubSection>
+            </u:ObjectPageSection>
+        </u:sections>
+    </u:ObjectPageLayout>
+</mvc:View>

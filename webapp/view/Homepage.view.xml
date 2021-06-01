@@ -5,83 +5,88 @@
     xmlns:u="sap.uxap"
     xmlns="sap.m">
     <App id="app">
-        <Page class="sapUiContentPadding" showNavButton="false" showHeader="true" showSubHeader="false" showFooter="false" id="mainPage" contentOnlyBusy="true" title="Northwind Order Details">
-            <u:ObjectPageDynamicHeaderContent pinnable="false">
+        <u:ObjectPageLayout isChildPage="false">
+            <u:headerTitle>
                 <u:ObjectPageDynamicHeaderTitle >
+                    <u:expandedHeading>
+                        <Title text="Northwind Order Details" />
+                    </u:expandedHeading>
+                    <u:snappedHeading>
+                        <Title text="Northwind Order Details" />
+                    </u:snappedHeading>
+                    <u:expandedContent>
+                    </u:expandedContent>
                     <u:snappedContent>
                     </u:snappedContent>
-                    <u:expandedContent>
-                        <fb:FilterBar id="filterBar" useToolbar="false" showRestoreOnFB="true" showGoOnFB="false" showClearOnFB="true" reset="onReset" clear="onClear">
-                            <fb:filterGroupItems>
-                                <fb:FilterGroupItem visibleInFilterBar="true" name="Filter A" groupName="Main Filters" label="Order ID">
-                                    <fb:control>
-                                        <MultiComboBox selectionFinish="onSearch" selectionChange="onSearch" selectedKeys="{orders>/OrderID}" placeholder="Order ID..." items="{orders>/Orders}" id="fbComboBox">
-                                            <core:Item key="{orders>OrderID}" text="{orders>OrderID}" />
-                                        </MultiComboBox>
-                                    </fb:control>
-                                </fb:FilterGroupItem>
-                                <fb:FilterGroupItem visibleInFilterBar="true" name="Filter B" groupName="Main Filters" label="Customer ID">
-                                    <fb:control>
-                                        <SearchField search="onSearch" placeholder="Customer ID..." id="fbCustomerID"/>
-                                    </fb:control>
-                                </fb:FilterGroupItem>
-                                <fb:FilterGroupItem visibleInFilterBar="true" name="Filter F" groupName="Main Filters" label="Ship City">
-                                    <fb:control>
-                                        <SearchField search="onSearch" placeholder="City..." id="fbShipCity" />
-                                    </fb:control>
-                                </fb:FilterGroupItem>
-                                <fb:FilterGroupItem visibleInFilterBar="true" name="Filter G" groupName="Main Filters" label="Ship Country">
-                                    <fb:control>
-                                        <SearchField search="onSearch" placeholder="Country..." id="fbShipCountry" />
-                                    </fb:control>
-                                </fb:FilterGroupItem>
-                            </fb:filterGroupItems>
-                        </fb:FilterBar>
-                    </u:expandedContent>
-
-                    <!-- <u:actions>
-                        <u:ObjectPageHeaderActionButton text="Clear" type="Emphasized" hideText="false" press="onClear" />
-                        <u:ObjectPageHeaderActionButton type="Transparent" text="Reset" hideText="false" hideIcon="true" press="onReset" />
+                    <u:actions>
+                        <Button text="Create New Profile" type="Emphasized" press="onCreate" />
                     </u:actions>
-                    <u:navigationActions>
-                        <u:ObjectPageHeaderActionButton icon="sap-icon://slim-arrow-up" type="Transparent" tooltip="slim-arrow-up"/>
-                        <u:ObjectPageHeaderActionButton icon="sap-icon://slim-arrow-down" type="Transparent" tooltip="slim-arrow-down"/>
-                    </u:navigationActions> -->
                 </u:ObjectPageDynamicHeaderTitle>
-            </u:ObjectPageDynamicHeaderContent>
-
-            <content>
-                <Table showSeparators="None" id="mainTable" items="{orders>/Orders}" alternateRowColors="true" class="sapUiSizeCompact" width="100%" growing="true" growingThreshold="20" updateStarted="onGrowingStarted">
-                    <columns>
-                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" styleClass="gray" width="10%">
-                            <Text text="#" />
-                        </Column>
-                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
-                            <Text text="Customer ID" />
-                        </Column>
-                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
-                            <Text text="Order Date" />
-                        </Column>
-                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
-                            <Text text="City" />
-                        </Column>
-                        <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
-                            <Text text="Country" />
-                        </Column>
-                    </columns>
-                    <items>
-                        <ColumnListItem type="Navigation" press="onPress">
-                            <cells>
-                                <ObjectIdentifier title="{orders>OrderID}" text="" class="sapUiTinyMarginTopBottom" />
-                                <Text text="{orders>CustomerID}" />
-                                <Text text="{path: 'orders>OrderDate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd/MM/yyyy' }}" />
-                                <Text text="{orders>ShipCity}" />
-                                <Text text="{orders>ShipCountry}" />
-                            </cells>
-                        </ColumnListItem>
-                    </items>
-                </Table>
-            </content>
-        </Page>
+            </u:headerTitle>
+            <u:headerContent>
+                <fb:FilterBar id="filterBar" useToolbar="false" showRestoreOnFB="true" showGoOnFB="false" showClearOnFB="true" reset="onReset" clear="onClear">
+                    <fb:filterGroupItems>
+                        <fb:FilterGroupItem visibleInFilterBar="true" name="Filter A" groupName="Main Filters" label="Order ID">
+                            <fb:control>
+                                <MultiComboBox selectionFinish="onSearch" selectionChange="onSearch" selectedKeys="{orders>/OrderID}" placeholder="Order ID..." items="{orders>/Orders}" id="fbComboBox">
+                                    <core:Item key="{orders>OrderID}" text="{orders>OrderID}" />
+                                </MultiComboBox>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+                        <fb:FilterGroupItem visibleInFilterBar="true" name="Filter B" groupName="Main Filters" label="Customer ID">
+                            <fb:control>
+                                <SearchField search="onSearch" placeholder="Customer ID..." id="fbCustomerID"/>
+                            </fb:control>
+                        </fb:FilterGroupItem>
+                        <fb:FilterGroupItem visibleInFilterBar="true" name="Filter F" groupName="Main Filters" label="Ship City">
+                            <fb:control>
+                                <SearchField search="onSearch" placeholder="City..." id="fbShipCity" />
+                            </fb:control>
+                        </fb:FilterGroupItem>
+                        <fb:FilterGroupItem visibleInFilterBar="true" name="Filter G" groupName="Main Filters" label="Ship Country">
+                            <fb:control>
+                                <SearchField search="onSearch" placeholder="Country..." id="fbShipCountry" />
+                            </fb:control>
+                        </fb:FilterGroupItem>
+                    </fb:filterGroupItems>
+                </fb:FilterBar>
+            </u:headerContent>
+            <u:sections>
+                <u:ObjectPageSection title="Orders" showTitle="true">
+                    <u:ObjectPageSubSection >
+                        <Table showSeparators="None" id="mainTable" items="{orders>/Orders}" alternateRowColors="true" class="sapUiSizeCompact" width="100%" growing="true" growingThreshold="20" updateStarted="onGrowingStarted">
+                            <columns>
+                                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" styleClass="gray" width="10%">
+                                    <Text text="#" />
+                                </Column>
+                                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                                    <Text text="Customer ID" />
+                                </Column>
+                                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                                    <Text text="Order Date" />
+                                </Column>
+                                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                                    <Text text="City" />
+                                </Column>
+                                <Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                                    <Text text="Country" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem type="Navigation" press="onPress">
+                                    <cells>
+                                        <ObjectIdentifier title="{orders>OrderID}" text="" class="sapUiTinyMarginTopBottom" />
+                                        <Text text="{orders>CustomerID}" />
+                                        <Text text="{path: 'orders>OrderDate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd/MM/yyyy' }}" />
+                                        <Text text="{orders>ShipCity}" />
+                                        <Text text="{orders>ShipCountry}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </u:ObjectPageSubSection>
+                </u:ObjectPageSection>
+            </u:sections>
+        </u:ObjectPageLayout>
     </App>
 </mvc:View>

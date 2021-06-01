@@ -2,8 +2,9 @@
 	xmlns:core="sap.ui.core"
 	xmlns:mvc="sap.ui.core.mvc"
 	xmlns:f="sap.ui.layout.form"
+	xmlns:u="sap.uxap"
 	xmlns="sap.m">
-	<Page title="Northwind Orders Details" class="sapUiContentPadding" showNavButton="true" navButtonPress="onNavBack" showHeader="true" showFooter="true" id="productPage">
+	<Page title="{products>/Product/ProductName}" class="sapUiContentPadding" showNavButton="true" navButtonPress="onNavBack" showHeader="true" showFooter="true" id="productPage">
 		<footer>
 			<OverflowToolbar>
 				<ToolbarSpacer/>

@@ -108,6 +108,13 @@
           "target": [
             "TargetProduct"
           ]
+        },
+        {
+          "name": "newprofile",
+          "pattern": "New",
+          "target": [
+            "TargetNewProfile"
+          ]
         }
       ],
       "targets": {
@@ -129,6 +136,12 @@
           "transition": "slide",
           "clearControlAggregation": false,
           "viewName": "Product"
+        },
+        "TargetNewProfile": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewName": "NewProfile"
         }
       }
     }

@@ -81,6 +81,11 @@ sap.ui.define([
             });
         },
 
+        onCreate: function () {
+            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("newprofile");
+        },
+
         onReset: function () {
             var oList = this.getView().byId("mainTable");
             var oBinding = oList.getBinding("items");

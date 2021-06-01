@@ -27,7 +27,7 @@ sap.ui.define([
                     success: function (oData) {
                         oStore.setProperty("/", oData.results);
                         that.getView().setModel(oStore, "details");
-                        that._onTableLoaded();
+                        // that._onTableLoaded();
                     },
                 });
                 oModel.read("/Orders(" + oArgs.OrderID + ")", {
@@ -47,7 +47,7 @@ sap.ui.define([
                 oData.push(this.getView().getModel("details").getData());
                 var oTable = this.getView().byId("detailTable");
                 oTable.removeAllColumns();
-                oTable.removeAllItems();
+                oTable.removeAllContent();
                 for (var i = 0; i < oData[0].length; i++) {
                     var oProduct = oData[0][i].ProductID;
                     var oPrice = oData[0][i].UnitPrice;
@@ -93,10 +93,12 @@ sap.ui.define([
                 });
             },
             
+            onCreate: function () {
+                var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                oRouter.navTo("newprofile");
+            },
+
             onNavBack: function () {
-                var oTableRem = this.getView().byId("detailTable");
-                oTableRem.removeAllColumns();
-                oTableRem.removeAllItems();
                 var oHistory = History.getInstance();
                 var sPreviousHash = oHistory.getPreviousHash();
                 if (sPreviousHash !== undefined) {
