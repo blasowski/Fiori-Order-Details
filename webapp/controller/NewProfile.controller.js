@@ -13,6 +13,10 @@ sap.ui.define([
             },
 
             _onTableLoad: function () {
+                var oRow = new JSONModel({
+                    value1: ""
+                });
+                this.getView().setModel(oRow, "onerow");
                 var oInfo = new JSONModel({
                     name: "Name",
                     description: "Description",
@@ -22,12 +26,14 @@ sap.ui.define([
                 var oTable = this.getView().byId("daysTable");
                 var oCEDI = this.getView().byId("CEDI").getValue();
                 var nameColumn = new sap.m.Column({
+                    hAlign: "Center",
                     header: new sap.m.Label({
                         text: "Name"
                     })
                 });
                 oTable.addColumn(nameColumn);
                 var descColumn = new sap.m.Column({
+                    hAlign: "Center",
                     header: new sap.m.Label({
                         text: "Description"
                     })
@@ -35,7 +41,8 @@ sap.ui.define([
                 oTable.addColumn(descColumn);
                 for (var i = 0; i < oCEDI; i++) {
                     var cedi = new sap.m.Column({
-                        styleClass: "yellow",
+                        hAlign: "Center",
+                        styleClass: "Yellow",
                         header: new sap.m.Label({
                             text: i + 1
                         })
@@ -46,25 +53,46 @@ sap.ui.define([
                 for (var i = 0; i < oPOS; i++) {
                     var sum = parseInt(oCEDI) + i
                     var pos = new sap.m.Column({
-                        styleClass: "orange",
+                        hAlign: "Center",
+                        styleClass: "Orange",
                         header: new sap.m.Label({
                             text: sum + 1
                         })
                     });
                     oTable.addColumn(pos);
                 }
-                var oInfoCells = [];
+                var aInfoCells = [];
                 var name = new sap.m.Text({
                     text: "{info>/name}"
                 });
                 var description = new sap.m.Text({
                     text: "{info>/description}"
                 });
-                oInfoCells.push(name, description);
-                var aList = new sap.m.ColumnListItem({
-                    cells: oInfoCells
+                aInfoCells.push(name, description);
+
+                var aCEDIPOS = []
+                var oCEDIPOS = parseInt(oCEDI) + parseInt(oPOS);
+
+                for (var i = 0; i < oCEDIPOS; i++) {
+                    var cell = new sap.m.Input({
+                        textAlign: "Center",
+                        value: oCEDIPOS
+                    });
+                    aCEDIPOS.push(cell)
+                }
+                var aCells = aInfoCells.concat(aCEDIPOS);
+                var oInfo = new sap.m.ColumnListItem({
+                    cells: aCells
                 });
-                oTable.bindItems("info>/", aList)
+                oTable.bindItems("onerow>/", oInfo)
+
+                var items = [];
+                var cells = []
+                items.push(oTable.mAggregations.items);
+                cells.push(items[0][0].mAggregations.cells);
+                
+                // for (var i = 0
+
             },
 
             addCEDI: function () {

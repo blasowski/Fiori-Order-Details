@@ -30,8 +30,8 @@
                     </Breadcrumbs>
                 </u:breadcrumbs>
                 <u:actions>
-                    <Button text="Save" type="Accept" />
-                    <Button text="Cancel" type="Reject" />
+                    <Button text="Save" type="Accept" icon="sap-icon://save" />
+                    <Button text="Cancel" type="Reject" press="onNavBack" />
                 </u:actions>
             </u:ObjectPageDynamicHeaderTitle>
         </u:headerTitle>
@@ -39,7 +39,7 @@
             <u:ObjectPageSection title="Create New Profile">
                 <u:ObjectPageSubSection >
                     <Toolbar style="Clear">
-                        <Input value="{info>/name}">
+                        <Input value="{info>/name}" >
                             <layoutData>
                                 <OverflowToolbarLayoutData shrinkable="false" minWidth = "5%" maxWidth="20%"/>
                             </layoutData>
@@ -53,28 +53,18 @@
                         <ToolbarSpacer />
                         <Label text="CEDI: " design="Bold" />
                         <Button icon="sap-icon://sys-add" type="Accept" press="addCEDI" />
-                        <Input value="8" type="Number" width="1%" id="CEDI" />
+                        <Input value="8" type="Number" width="3%" id="CEDI" textAlign="Center" editable="false" />
                         <Button icon="sap-icon://sys-minus" type="Reject" press="removeCEDI" />
                         <Label text="POS: " design="Bold" />
                         <Button icon="sap-icon://sys-add" type="Accept" press="addPOS" />
-                        <Input value="8" type="Number" width="1%" id="POS" />
+                        <Input value="7" type="Number" width="3%" id="POS" textAlign="Center" editable="false" />
                         <Button icon="sap-icon://sys-minus" type="Reject" press="removePOS" />
                     </Toolbar>
                 </u:ObjectPageSubSection>
                 <u:ObjectPageSubSection>
                     <ScrollContainer vertical="false" horizontal="true">
                         <content>
-                            <Table id="daysTable" popinLayout="GridLarge">
-                                <!-- <columns>
-                                </columns>
-                                <items>
-                                    <ColumnListItem id="items">
-                                        <cells>
-                                            <Text text="{info>/name}" />
-                                            <Text text="{info>/description}" />
-                                        </cells>
-                                    </ColumnListItem>
-                                </items> -->
+                            <Table id="daysTable">
                             </Table>
                         </content>
                     </ScrollContainer>
