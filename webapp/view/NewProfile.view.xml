@@ -36,10 +36,10 @@
             </u:ObjectPageDynamicHeaderTitle>
         </u:headerTitle>
         <u:sections>
-            <u:ObjectPageSection title="Create New Profile">
+            <u:ObjectPageSection title="Create New Profile" >
                 <u:ObjectPageSubSection >
-                    <Toolbar style="Clear">
-                        <Input value="{info>/name}" >
+                    <Toolbar style="Clear" design="Transparent">
+                        <Input value="{info>/name}">
                             <layoutData>
                                 <OverflowToolbarLayoutData shrinkable="false" minWidth = "5%" maxWidth="20%"/>
                             </layoutData>
@@ -50,15 +50,18 @@
                                 <OverflowToolbarLayoutData shrinkable="false" minWidth = "5%" maxWidth="20%"/>
                             </layoutData>
                         </Input>
+                        <ToolbarSeparator />
+                        <Button text="OK" icon="sap-icon://accept" press="onChangeValue" type="Emphasized"/>
                         <ToolbarSpacer />
-                        <Label text="CEDI: " design="Bold" />
-                        <Button icon="sap-icon://sys-add" type="Accept" press="addCEDI" />
-                        <Input value="8" type="Number" width="3%" id="CEDI" textAlign="Center" editable="false" />
-                        <Button icon="sap-icon://sys-minus" type="Reject" press="removeCEDI" />
-                        <Label text="POS: " design="Bold" />
-                        <Button icon="sap-icon://sys-add" type="Accept" press="addPOS" />
-                        <Input value="7" type="Number" width="3%" id="POS" textAlign="Center" editable="false" />
-                        <Button icon="sap-icon://sys-minus" type="Reject" press="removePOS" />
+                        <ToolbarSpacer />
+                        <Label text="SellOut CEDI: " design="Bold" />
+                        <StepInput min="1" max="99" value="8" width="1%" change="changeCEDI" name="CEDI" id="CEDI" textAlign="Center"/>
+                        <ToolbarSpacer />
+                        <Label text="SellOut POS: " design="Bold" />
+                        <StepInput min="1" max="99" value="7" width="1%" change="changePOS" name="POS" id="POS" textAlign="Center"/>
+                        <ToolbarSpacer />
+                        <Label text="Days" design="Bold" id=""/>
+                        <Input value="" id="daysTotal" editable="false" width="3%" />
                     </Toolbar>
                 </u:ObjectPageSubSection>
                 <u:ObjectPageSubSection>
@@ -68,6 +71,9 @@
                             </Table>
                         </content>
                     </ScrollContainer>
+                </u:ObjectPageSubSection>
+                <u:ObjectPageSubSection visible="false" id="errorMessage">
+                    <MessageStrip text="Error! Percentage should always be 100." type="Error" showIcon="true" showCloseButton="false" class="sapUiTinyMargin" />
                 </u:ObjectPageSubSection>
             </u:ObjectPageSection>
         </u:sections>

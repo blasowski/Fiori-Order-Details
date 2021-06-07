@@ -1,10 +1,10 @@
 sap.ui.define([
         "sap/ui/core/mvc/Controller",
         "sap/ui/core/routing/History",
-        "sap/ui/model/odata/v2/ODataModel",
-        "sap/ui/model/json/JSONModel"
+        "sap/ui/model/json/JSONModel",
+        "sap/m/MessageToast"
     ],
-    function (Controller, History, ODataModel, JSONModel) {
+    function (Controller, History, JSONModel, MessageToast) {
         "use strict";
 
         return Controller.extend("sap.btp.details.controller.NewProfile", {
@@ -70,60 +70,121 @@ sap.ui.define([
                 });
                 aInfoCells.push(name, description);
 
-                var aCEDIPOS = []
+                var aCells = []
                 var oCEDIPOS = parseInt(oCEDI) + parseInt(oPOS);
+                var oResults = parseFloat(100 / oCEDIPOS).toFixed(2);
 
                 for (var i = 0; i < oCEDIPOS; i++) {
                     var cell = new sap.m.Input({
+                        liveChange: "onChangeValue",
+                        change: "onChangeValue",
                         textAlign: "Center",
-                        value: oCEDIPOS
+                        type: "Number",
+                        value: oResults
                     });
-                    aCEDIPOS.push(cell)
+                    aCells.push(cell)
                 }
-                var aCells = aInfoCells.concat(aCEDIPOS);
+                var aCells = aInfoCells.concat(aCells);
                 var oInfo = new sap.m.ColumnListItem({
                     cells: aCells
                 });
-                oTable.bindItems("onerow>/", oInfo)
 
-                var items = [];
-                var cells = []
-                items.push(oTable.mAggregations.items);
-                cells.push(items[0][0].mAggregations.cells);
+                oTable.bindItems("onerow>/", oInfo);
+                this.getView().byId("daysTotal").setValue(oCEDIPOS);
+            },
+
+            onChangeValue: function () {
+                var oRow = new JSONModel({
+                    value1: ""
+                });
+                this.getView().setModel(oRow, "onerow");
+                var oTable = this.getView().byId("daysTable");
+                var cellCount = oTable["mAggregations"]["items"][0]["mAggregations"]["cells"].length;
+                var aCells = []
+                for (var i = 2; i < cellCount; i++) {
+                    aCells.push(oTable["mAggregations"]["items"][0]["mAggregations"]["cells"][i]["mProperties"]["value"])
+                }
+                var aResults = []
+                for (var i = 0; i < aCells.length; i++) {
+                    var floatCells = parseFloat(aCells[i])
+                    aResults.push(floatCells);
+                }
+                var reduceResults = aResults.reduce(function (a, b) {
+                    return a + b;
+                }, 0).toFixed(2);
+                var oResults = parseFloat(reduceResults);
+
+                if (oResults !== 100) {
+                    this.getView().byId("errorMessage").setProperty("visible", true)
+                } else if (oResults = 100) {
+                    this.getView().byId("errorMessage").setProperty("visible", false)
+                }
+
+                var sum = function (acc, itemValue) {
+                    return acc + itemValue;
+                };
+
+                var newCells = function (itemIdx, newValue, items) {
+                    if (!Number.isInteger(itemIdx) || itemIdx < 0 || itemIdx >= items.length) return items;
+                    var total = items.reduce(sum, 0),
+                        origItemValue = items[itemIdx],
+                        diffValue = origItemValue - newValue,
+                        totalForRemainItems = total + diffValue,
+                        numItems = items.length - 1;
+                    if (diffValue === 0 || totalForRemainItems < 0) return items;
+                    var newItems = [].concat(items);
+                    newItems.splice(itemIdx, 1);
+                    var itemValue = Math.floor(totalForRemainItems / numItems);
+                    var extra = totalForRemainItems - (numItems * itemValue);
+                    newItems.forEach(function (item, idx) {
+                        newItems[idx] = (idx === 0) ? itemValue + extra : itemValue;
+                    });
+                    newItems.splice(itemIdx, 0, newValue);
+                    return newItems;
+                };
+
                 
-                // for (var i = 0
+
+                var aNewResults = newCells(1, 10, aResults);
+
+                oTable.removeAllItems();
+                var aInfoCells = [];
+                var name = new sap.m.Text({
+                    text: "{info>/name}"
+                });
+                var description = new sap.m.Text({
+                    text: "{info>/description}"
+                });
+                aInfoCells.push(name, description);
+                var oldCells = [];
+                for (var i = 0; i < cellCount; i++) {
+                    var cell = new sap.m.Input({
+                        liveChange: "onChangeValue",
+                        change: "onChangeValue",
+                        textAlign: "Center",
+                        type: "Number",
+                        value: aNewResults[i]
+                    });
+                    oldCells.push(cell)
+                }
+                var oldCells = aInfoCells.concat(oldCells);
+                var oInfo = new sap.m.ColumnListItem({
+                    cells: oldCells
+                });
+                oTable.bindItems("onerow>/", oInfo);
+                
+                console.log(aResults);
+                console.log(aNewResults);
 
             },
 
-            addCEDI: function () {
-                var oCEDI = this.getView().byId("CEDI").getValue();
+            changeCEDI: function () {
                 var oTable = this.getView().byId("daysTable")
-                var oAdd = parseInt(oCEDI);
-                this.getView().byId("CEDI").setValue(oAdd + 1);
                 oTable.removeAllColumns();
                 this._onTableLoad();
             },
-            removeCEDI: function () {
-                var oCEDI = this.getView().byId("CEDI").getValue();
+            changePOS: function () {
                 var oTable = this.getView().byId("daysTable")
-                var oAdd = parseInt(oCEDI);
-                this.getView().byId("CEDI").setValue(oAdd - 1);
-                oTable.removeAllColumns();
-                this._onTableLoad();
-            },
-            addPOS: function () {
-                var oPOS = this.getView().byId("POS").getValue();
-                var oTable = this.getView().byId("daysTable")
-                var oAdd = parseInt(oPOS);
-                this.getView().byId("POS").setValue(oAdd + 1);
-                oTable.removeAllColumns();
-                this._onTableLoad();
-            },
-            removePOS: function () {
-                var oPOS = this.getView().byId("POS").getValue();
-                var oTable = this.getView().byId("daysTable")
-                var oAdd = parseInt(oPOS);
-                this.getView().byId("POS").setValue(oAdd - 1);
                 oTable.removeAllColumns();
                 this._onTableLoad();
             },
