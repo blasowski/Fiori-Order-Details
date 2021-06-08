@@ -11,7 +11,7 @@ sap.ui.define([
     return Controller.extend("sap.btp.details.controller.Homepage", {
 
         onInit: function () {
-            BusyIndicator.show();
+            // BusyIndicator.show();
             var oModel = new ODataModel("./V2/Northwind/Northwind.svc", true);
             var oStore = new JSONModel();
             var that = this;
@@ -22,7 +22,7 @@ sap.ui.define([
                 success: function (oData) {
                     oStore.setProperty("/Orders", oData.results);
                     that.getView().setModel(oStore, "orders");
-                    BusyIndicator.hide();
+                    // BusyIndicator.hide();
                 }
             });
         },
@@ -31,7 +31,7 @@ sap.ui.define([
             var aSearchFilters = [];
             // ComboBox
             var aComboBoxKeys = this.getView().byId("fbComboBox").getSelectedKeys();
-            for (var i = 0; i < aComboBoxKeys.length; i++) {
+            for (let i = 0; i < aComboBoxKeys.length; i++) {
                 aSearchFilters.push(new Filter({
                     path: "OrderID",
                     operator: FilterOperator.EQ,

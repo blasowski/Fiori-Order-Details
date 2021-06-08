@@ -1,14 +1,16 @@
 sap.ui.define([
         "sap/ui/core/mvc/Controller",
         "sap/ui/core/routing/History",
+        "sap/ui/core/BusyIndicator",
         "sap/ui/model/json/JSONModel",
         "sap/m/MessageToast"
     ],
-    function (Controller, History, JSONModel, MessageToast) {
+    function (Controller, History, BusyIndicator, JSONModel, MessageToast) {
         "use strict";
 
         return Controller.extend("sap.btp.details.controller.NewProfile", {
             onInit: function () {
+                BusyIndicator.hide();
                 this._onTableLoad();
             },
 
@@ -24,7 +26,8 @@ sap.ui.define([
                 });
                 this.getView().setModel(oInfo, "info");
                 var oTable = this.getView().byId("daysTable");
-                var oCEDI = this.getView().byId("CEDI").getValue();
+                var oCedi = this.getView().byId("CEDI").getValue();
+                var oPos = this.getView().byId("POS").getValue();
                 var nameColumn = new sap.m.Column({
                     hAlign: "Center",
                     header: new sap.m.Label({
@@ -39,7 +42,7 @@ sap.ui.define([
                     })
                 });
                 oTable.addColumn(descColumn);
-                for (var i = 0; i < oCEDI; i++) {
+                for (let i = 0; i < oCedi; i++) {
                     var cedi = new sap.m.Column({
                         hAlign: "Center",
                         styleClass: "Yellow",
@@ -49,9 +52,8 @@ sap.ui.define([
                     });
                     oTable.addColumn(cedi);
                 }
-                var oPOS = this.getView().byId("POS").getValue();
-                for (var i = 0; i < oPOS; i++) {
-                    var sum = parseInt(oCEDI) + i
+                for (let i = 0; i < oPos; i++) {
+                    var sum = parseInt(oCedi) + i
                     var pos = new sap.m.Column({
                         hAlign: "Center",
                         styleClass: "Orange",
@@ -70,14 +72,51 @@ sap.ui.define([
                 });
                 aInfoCells.push(name, description);
 
-                var aCells = []
-                var oCEDIPOS = parseInt(oCEDI) + parseInt(oPOS);
-                var oResults = parseFloat(100 / oCEDIPOS).toFixed(2);
-
-                for (var i = 0; i < oCEDIPOS; i++) {
+                var aCells = [];
+                var oCediPos = parseInt(oCedi) + parseInt(oPos);
+                var oResults = parseFloat(100 / oCediPos).toFixed(1);
+                var main = this;
+                for (let i = 0; i < oCediPos; i++) {
                     var cell = new sap.m.Input({
-                        liveChange: "onChangeValue",
-                        change: "onChangeValue",
+                        change: function () {
+                            var aNewValues = [];
+                            var oCellNumber = oTable["mAggregations"]["items"][0]["mAggregations"]["cells"].length;
+                            for (let i = 2; i < oCellNumber; i++) {
+                                var newValueString = oTable["mAggregations"]["items"][0]["mAggregations"]["cells"][i]["mProperties"]["value"];
+                                var newValue = parseFloat(newValueString);
+                                aNewValues.push(newValue);
+                            }
+                            for (let i = 0; i < aNewValues.length; i++) {
+                                var olditem = aOldValues[i];
+                                var newitem = aNewValues[i];
+                                if (newitem !== olditem) {
+                                    var aResultValues = olditem - newitem;
+                                }
+                            }
+                            var aAllCells = oTable["mAggregations"]["items"][0]["mAggregations"]["cells"];
+                            var aCells = aAllCells.slice(2);
+                            var oDivide = aResultValues / (aCells.length - 1);
+                            var that = this;
+                            for (let i = 2; i < aAllCells.length; i++) {
+                                if (aOldValues[i - 2] == aNewValues[i - 2]) {
+                                    var getNewValue = that["oParent"]["mAggregations"]["cells"][i].getValue();
+                                    var changeNewValue = (parseFloat(getNewValue) + oDivide).toFixed(1);
+                                    that["oParent"]["mAggregations"]["cells"][i].setValue(changeNewValue)
+                                    aOldValues.splice(i - 2, 1, parseFloat(changeNewValue));
+                                }
+                                if (aOldValues[i - 2] !== aNewValues[i - 2]) {
+                                    console.log(1);
+                                }
+                            }
+                            var oSumCellValues = aOldValues.reduce((a, b) => a + b);
+                            var oSumResult = Math.floor(oSumCellValues - aResultValues);
+                            if (oSumResult !== 100) {
+                                console.log("sum is:" + oSumResult)
+                                main.getView().byId("errorMessage").setProperty("visible", true);
+                            } else if (oSumResult == 100) {
+                                main.getView().byId("errorMessage").setProperty("visible", false);
+                            }
+                        },
                         textAlign: "Center",
                         type: "Number",
                         value: oResults
@@ -90,92 +129,24 @@ sap.ui.define([
                 });
 
                 oTable.bindItems("onerow>/", oInfo);
-                this.getView().byId("daysTotal").setValue(oCEDIPOS);
-            },
+                this.getView().byId("daysTotal").setValue(oCediPos);
 
-            onChangeValue: function () {
-                var oRow = new JSONModel({
-                    value1: ""
-                });
-                this.getView().setModel(oRow, "onerow");
-                var oTable = this.getView().byId("daysTable");
-                var cellCount = oTable["mAggregations"]["items"][0]["mAggregations"]["cells"].length;
-                var aCells = []
-                for (var i = 2; i < cellCount; i++) {
-                    aCells.push(oTable["mAggregations"]["items"][0]["mAggregations"]["cells"][i]["mProperties"]["value"])
-                }
-                var aResults = []
-                for (var i = 0; i < aCells.length; i++) {
-                    var floatCells = parseFloat(aCells[i])
-                    aResults.push(floatCells);
-                }
-                var reduceResults = aResults.reduce(function (a, b) {
-                    return a + b;
-                }, 0).toFixed(2);
-                var oResults = parseFloat(reduceResults);
-
-                if (oResults !== 100) {
-                    this.getView().byId("errorMessage").setProperty("visible", true)
-                } else if (oResults = 100) {
-                    this.getView().byId("errorMessage").setProperty("visible", false)
+                var aOldValues = [];
+                for (let i = 2; i < oTable["mAggregations"]["items"][0]["mAggregations"]["cells"].length; i++) {
+                    var oldValueString = oTable["mAggregations"]["items"][0]["mAggregations"]["cells"][i]["mProperties"]["value"];
+                    var oldValue = parseFloat(oldValueString);
+                    aOldValues.push(oldValue);
                 }
 
-                var sum = function (acc, itemValue) {
-                    return acc + itemValue;
-                };
-
-                var newCells = function (itemIdx, newValue, items) {
-                    if (!Number.isInteger(itemIdx) || itemIdx < 0 || itemIdx >= items.length) return items;
-                    var total = items.reduce(sum, 0),
-                        origItemValue = items[itemIdx],
-                        diffValue = origItemValue - newValue,
-                        totalForRemainItems = total + diffValue,
-                        numItems = items.length - 1;
-                    if (diffValue === 0 || totalForRemainItems < 0) return items;
-                    var newItems = [].concat(items);
-                    newItems.splice(itemIdx, 1);
-                    var itemValue = Math.floor(totalForRemainItems / numItems);
-                    var extra = totalForRemainItems - (numItems * itemValue);
-                    newItems.forEach(function (item, idx) {
-                        newItems[idx] = (idx === 0) ? itemValue + extra : itemValue;
-                    });
-                    newItems.splice(itemIdx, 0, newValue);
-                    return newItems;
-                };
-
-                
-
-                var aNewResults = newCells(1, 10, aResults);
-
-                oTable.removeAllItems();
-                var aInfoCells = [];
-                var name = new sap.m.Text({
-                    text: "{info>/name}"
-                });
-                var description = new sap.m.Text({
-                    text: "{info>/description}"
-                });
-                aInfoCells.push(name, description);
-                var oldCells = [];
-                for (var i = 0; i < cellCount; i++) {
-                    var cell = new sap.m.Input({
-                        liveChange: "onChangeValue",
-                        change: "onChangeValue",
-                        textAlign: "Center",
-                        type: "Number",
-                        value: aNewResults[i]
-                    });
-                    oldCells.push(cell)
+                var oSumCellValues = aOldValues.reduce((a, b) => a + b);
+                var oSumResult = Math.floor(oSumCellValues);
+                if (oSumResult !== 100) {
+                    console.log("sum:" + oSumResult)
+                    main.getView().byId("errorMessage").setProperty("visible", true);
+                } else if (oSumResult == 100) {
+                    console.log("sum:" + oSumResult)
+                    main.getView().byId("errorMessage").setProperty("visible", false);
                 }
-                var oldCells = aInfoCells.concat(oldCells);
-                var oInfo = new sap.m.ColumnListItem({
-                    cells: oldCells
-                });
-                oTable.bindItems("onerow>/", oInfo);
-                
-                console.log(aResults);
-                console.log(aNewResults);
-
             },
 
             changeCEDI: function () {

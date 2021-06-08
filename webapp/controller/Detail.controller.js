@@ -14,7 +14,7 @@ sap.ui.define([
             },
 
             _onRouteMatched: function (oEvent) {
-                BusyIndicator.show();
+                // BusyIndicator.show();
                 var oModel = new ODataModel("./V2/Northwind/Northwind.svc", true);
                 var oStore = new JSONModel();
                 var oStore2 = new JSONModel();
@@ -27,14 +27,13 @@ sap.ui.define([
                     success: function (oData) {
                         oStore.setProperty("/", oData.results);
                         that.getView().setModel(oStore, "details");
-                        // that._onTableLoaded();
                     },
                 });
                 oModel.read("/Orders(" + oArgs.OrderID + ")", {
                     success: function (oData) {
                         oStore2.setProperty("/", oData);
                         that.getView().setModel(oStore2, "orders");
-                        BusyIndicator.hide();
+                        // BusyIndicator.hide();
                     },
                 });
             },
@@ -48,7 +47,7 @@ sap.ui.define([
                 var oTable = this.getView().byId("detailTable");
                 oTable.removeAllColumns();
                 oTable.removeAllContent();
-                for (var i = 0; i < oData[0].length; i++) {
+                for (let i = 0; i < oData[0].length; i++) {
                     var oProduct = oData[0][i].ProductID;
                     var oPrice = oData[0][i].UnitPrice;
                     oJSON[0][oProduct] = oPrice;
@@ -61,7 +60,7 @@ sap.ui.define([
                 oStore2.setProperty("/", aValues)
                 this.getView().setModel(oStore, "Product");
                 this.getView().setModel(oStore2, "Price");
-                for (var i = 0; i < oData[0].length; i++) {
+                for (let i = 0; i < oData[0].length; i++) {
                     var oColumn = new sap.m.Column({
                         header: new sap.m.Label({
                             text: "{Product>/" + [i] + "}"
@@ -70,7 +69,7 @@ sap.ui.define([
                     oTable.addColumn(oColumn);
                 }
                 var oCell = [];
-                for (var i = 0; i < oData[0].length; i++) {
+                for (let i = 0; i < oData[0].length; i++) {
                     var cell = new sap.m.Text({
                         text: "{Price>/0/" + [i] + "}"
                     });

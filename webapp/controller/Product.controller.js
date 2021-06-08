@@ -16,7 +16,7 @@ sap.ui.define([
             },
 
             _onRouteMatched: function (oEvent) {
-                BusyIndicator.show();
+                // BusyIndicator.show();
                 var oModel = new ODataModel("./V2/Northwind/Northwind.svc", true);
                 var oStore = new JSONModel();
                 var oArgs = oEvent.getParameter("arguments");
@@ -28,7 +28,7 @@ sap.ui.define([
                         oStore.setProperty("/", oData);
                         oStore.setProperty("/Product", oData.Product);
                         that.getView().setModel(oStore, "products");
-                        BusyIndicator.hide();
+                        // BusyIndicator.hide();
                     }
                 });
                 this.getView().bindElement("/Product/");
