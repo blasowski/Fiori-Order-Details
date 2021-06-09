@@ -93,20 +93,23 @@ sap.ui.define([
                             }
                             var aStoredValue = [];
                             for (let i = 0; i < oCorrectCells.length; i++) {
-                                if (aStartingValue[i] !== aChangedValue[i]) {
+                                if (!(aStartingValue[i] == aChangedValue[i])) {
                                     aStoredValue.splice(i, 1, aChangedValue[i]);
+                                    console.log();
                                 }
                             }
                             var oValue = aStoredValue.reduce((a, b) => a + b)
-                            var oResult = parseFloat((100 - parseFloat(oValue)) / (aCellsToModify.length));
+                            var oResult = parseFloat((100 - parseFloat(oValue)) / (aCellsToModify.length)).toFixed(1);
                             for (let i = 0; i < oCorrectCells.length; i++) {
-                                if (aStartingValue[i] === aChangedValue[i]) {
+                                if (aStartingValue[i] == aChangedValue[i]) {
                                     oCorrectCells[i].setValue(oResult);
                                     aChangedValue.splice(i, 1, oResult)
                                     aStartingValue.splice(i, 1, oResult);
                                 }
                             }
                             var oSecondCheck = parseInt(oResult);
+                            var oSecondDifference = (100 - oSecondCheck) / (aCellsToModify.length);
+
                             if (oSecondCheck !== 100) {
                                 that.getView().byId("errorMessage").setProperty("visible", true);
                             } else if (oSecondCheck == 100) {
