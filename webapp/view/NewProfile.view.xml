@@ -1,5 +1,7 @@
 <mvc:View xmlns:core="sap.ui.core" controllerName="sap.btp.details.controller.NewProfile"
     xmlns:mvc="sap.ui.core.mvc"
+    xmlns:c="sap.suite.ui.commons"
+    xmlns:v="sap.viz.ui5.controls"
     xmlns:l="sap.ui.layout"
     xmlns:t="sap.ui.table"
     xmlns:u="sap.uxap"
@@ -50,8 +52,6 @@
                                 <OverflowToolbarLayoutData shrinkable="false" minWidth = "5%" maxWidth="20%"/>
                             </layoutData>
                         </Input>
-                        <ToolbarSeparator />
-                        <Button text="OK" icon="sap-icon://accept" press="onChangeValue" type="Emphasized"/>
                         <ToolbarSpacer />
                         <ToolbarSpacer />
                         <Label text="SellOut CEDI: " design="Bold" />
@@ -69,11 +69,21 @@
                 </u:ObjectPageSubSection>
                 <u:ObjectPageSubSection>
                     <ScrollContainer vertical="false" horizontal="true">
-                        <content>
-                            <Table id="daysTable">
-                            </Table>
-                        </content>
+                        <Table id="daysTable">
+                        </Table>
                     </ScrollContainer>
+                </u:ObjectPageSubSection>
+                <u:ObjectPageSubSection >
+                            <c:ChartContainer id="chartContainer" showZoom="false" showPersonalization="false" autoAdjustHeight="true" title="Chart">
+                                <c:content>
+                                    <c:ChartContainerContent icon="sap-icon://line-chart" title="Line Chart">
+                                        <c:content>
+                                            <v:VizFrame >
+                                            </v:VizFrame>
+                                        </c:content>
+                                    </c:ChartContainerContent>
+                                </c:content>
+                            </c:ChartContainer>
                 </u:ObjectPageSubSection>
             </u:ObjectPageSection>
         </u:sections>

@@ -75,46 +75,42 @@ sap.ui.define([
                 var aCells = [];
                 var oCediPos = parseInt(oCedi) + parseInt(oPos);
                 var oResults = parseFloat(100 / oCediPos).toFixed(1);
-                var main = this;
+                var that = this;
                 for (let i = 0; i < oCediPos; i++) {
                     var cell = new sap.m.Input({
                         change: function () {
-                            var aNewValues = [];
-                            var oCellNumber = oTable["mAggregations"]["items"][0]["mAggregations"]["cells"].length;
-                            for (let i = 2; i < oCellNumber; i++) {
-                                var newValueString = oTable["mAggregations"]["items"][0]["mAggregations"]["cells"][i]["mProperties"]["value"];
+                            var aChangedValue = [];
+                            for (let i = 0; i < oCorrectCells.length; i++) {
+                                var newValueString = oCorrectCells[i].getValue();
                                 var newValue = parseFloat(newValueString);
-                                aNewValues.push(newValue);
+                                aChangedValue.push(newValue);
                             }
-                            for (let i = 0; i < aNewValues.length; i++) {
-                                var olditem = aOldValues[i];
-                                var newitem = aNewValues[i];
-                                if (newitem !== olditem) {
-                                    var aResultValues = olditem - newitem;
+                            var aCellsToModify = [];
+                            for (let i = 0; i < oCorrectCells.length; i++) {
+                                if (aChangedValue[i] == aStartingValue[i]) {
+                                    aCellsToModify.push(i);
                                 }
                             }
-                            var aAllCells = oTable["mAggregations"]["items"][0]["mAggregations"]["cells"];
-                            var aCells = aAllCells.slice(2);
-                            var oDivide = aResultValues / (aCells.length - 1);
-                            var that = this;
-                            for (let i = 2; i < aAllCells.length; i++) {
-                                if (aOldValues[i - 2] == aNewValues[i - 2]) {
-                                    var getNewValue = that["oParent"]["mAggregations"]["cells"][i].getValue();
-                                    var changeNewValue = (parseFloat(getNewValue) + oDivide).toFixed(1);
-                                    that["oParent"]["mAggregations"]["cells"][i].setValue(changeNewValue)
-                                    aOldValues.splice(i - 2, 1, parseFloat(changeNewValue));
-                                }
-                                if (aOldValues[i - 2] !== aNewValues[i - 2]) {
-                                    console.log(1);
+                            var aStoredValue = [];
+                            for (let i = 0; i < oCorrectCells.length; i++) {
+                                if (aStartingValue[i] !== aChangedValue[i]) {
+                                    aStoredValue.splice(i, 1, aChangedValue[i]);
                                 }
                             }
-                            var oSumCellValues = aOldValues.reduce((a, b) => a + b);
-                            var oSumResult = Math.floor(oSumCellValues - aResultValues);
-                            if (oSumResult !== 100) {
-                                console.log("sum is:" + oSumResult)
-                                main.getView().byId("errorMessage").setProperty("visible", true);
-                            } else if (oSumResult == 100) {
-                                main.getView().byId("errorMessage").setProperty("visible", false);
+                            var oValue = aStoredValue.reduce((a, b) => a + b)
+                            var oResult = parseFloat((100 - parseFloat(oValue)) / (aCellsToModify.length));
+                            for (let i = 0; i < oCorrectCells.length; i++) {
+                                if (aStartingValue[i] === aChangedValue[i]) {
+                                    oCorrectCells[i].setValue(oResult);
+                                    aChangedValue.splice(i, 1, oResult)
+                                    aStartingValue.splice(i, 1, oResult);
+                                }
+                            }
+                            var oSecondCheck = parseInt(oResult);
+                            if (oSecondCheck !== 100) {
+                                that.getView().byId("errorMessage").setProperty("visible", true);
+                            } else if (oSecondCheck == 100) {
+                                that.getView().byId("errorMessage").setProperty("visible", false);
                             }
                         },
                         textAlign: "Center",
@@ -127,26 +123,22 @@ sap.ui.define([
                 var oInfo = new sap.m.ColumnListItem({
                     cells: aCells
                 });
-
                 oTable.bindItems("onerow>/", oInfo);
                 this.getView().byId("daysTotal").setValue(oCediPos);
 
-                var aOldValues = [];
-                for (let i = 2; i < oTable["mAggregations"]["items"][0]["mAggregations"]["cells"].length; i++) {
-                    var oldValueString = oTable["mAggregations"]["items"][0]["mAggregations"]["cells"][i]["mProperties"]["value"];
+                var oAllCells = oTable["mAggregations"]["items"][0]["mAggregations"]["cells"];
+                var oCorrectCells = oAllCells.slice(2);
+                var aStartingValue = [];
+                for (let i = 0; i < oCorrectCells.length; i++) {
+                    var oldValueString = oCorrectCells[i].getValue();
                     var oldValue = parseFloat(oldValueString);
-                    aOldValues.push(oldValue);
+                    aStartingValue.push(oldValue);
                 }
 
-                var oSumCellValues = aOldValues.reduce((a, b) => a + b);
-                var oSumResult = Math.floor(oSumCellValues);
-                if (oSumResult !== 100) {
-                    console.log("sum:" + oSumResult)
-                    main.getView().byId("errorMessage").setProperty("visible", true);
-                } else if (oSumResult == 100) {
-                    console.log("sum:" + oSumResult)
-                    main.getView().byId("errorMessage").setProperty("visible", false);
-                }
+                var oStartingValuesSum = aStartingValue.reduce((a, b) => a + b);
+                var oStartingCheck = parseInt(oStartingValuesSum);
+                var oStartingDifference = (100 - oStartingCheck) / (oCorrectCells.length);
+                console.log(oStartingDifference);
             },
 
             changeCEDI: function () {
