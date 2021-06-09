@@ -95,11 +95,10 @@ sap.ui.define([
                             for (let i = 0; i < oCorrectCells.length; i++) {
                                 if (!(aStartingValue[i] == aChangedValue[i])) {
                                     aStoredValue.splice(i, 1, aChangedValue[i]);
-                                    console.log();
                                 }
                             }
-                            var oValue = aStoredValue.reduce((a, b) => a + b)
-                            var oResult = parseFloat((100 - parseFloat(oValue)) / (aCellsToModify.length)).toFixed(1);
+                            var oSumStored = aStoredValue.reduce((a, b) => a + b)
+                            var oResult = Math.round(parseFloat(((100 - oSumStored) / (aCellsToModify.length)).toFixed(1))) ;
                             for (let i = 0; i < oCorrectCells.length; i++) {
                                 if (aStartingValue[i] == aChangedValue[i]) {
                                     oCorrectCells[i].setValue(oResult);
@@ -107,12 +106,21 @@ sap.ui.define([
                                     aStartingValue.splice(i, 1, oResult);
                                 }
                             }
-                            var oSecondCheck = parseInt(oResult);
-                            var oSecondDifference = (100 - oSecondCheck) / (aCellsToModify.length);
-
-                            if (oSecondCheck !== 100) {
+                            var oCheckPercentage = aChangedValue.reduce((a, b) => a + b)
+                            var oCheckDifference = (100 - oCheckPercentage).toFixed(1) / aCellsToModify.length;
+                            var oFinal = parseFloat((oResult + oCheckDifference).toFixed(1));
+                            for (let i = 0; i < oCorrectCells.length; i++) {
+                                if (aStartingValue[i] == aChangedValue[i]) {
+                                    oCorrectCells[i].setValue(oFinal);
+                                    aChangedValue.splice(i, 1, oFinal)
+                                    aStartingValue.splice(i, 1, oFinal);
+                                }
+                            }
+                            var oCheckTotal = aChangedValue.reduce((a, b) => a + b)
+                            var oCheck = Math.round(oCheckTotal);
+                            if (oCheck !== 100) {
                                 that.getView().byId("errorMessage").setProperty("visible", true);
-                            } else if (oSecondCheck == 100) {
+                            } else if (oCheck == 100) {
                                 that.getView().byId("errorMessage").setProperty("visible", false);
                             }
                         },
@@ -128,7 +136,6 @@ sap.ui.define([
                 });
                 oTable.bindItems("onerow>/", oInfo);
                 this.getView().byId("daysTotal").setValue(oCediPos);
-
                 var oAllCells = oTable["mAggregations"]["items"][0]["mAggregations"]["cells"];
                 var oCorrectCells = oAllCells.slice(2);
                 var aStartingValue = [];
@@ -137,11 +144,13 @@ sap.ui.define([
                     var oldValue = parseFloat(oldValueString);
                     aStartingValue.push(oldValue);
                 }
-
                 var oStartingValuesSum = aStartingValue.reduce((a, b) => a + b);
                 var oStartingCheck = parseInt(oStartingValuesSum);
-                var oStartingDifference = (100 - oStartingCheck) / (oCorrectCells.length);
-                console.log(oStartingDifference);
+                if (oStartingCheck !== 100) {
+                    that.getView().byId("errorMessage").setProperty("visible", true);
+                } else if (oStartingCheck == 100) {
+                    that.getView().byId("errorMessage").setProperty("visible", false);
+                }
             },
 
             changeCEDI: function () {

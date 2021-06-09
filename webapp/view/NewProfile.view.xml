@@ -55,10 +55,10 @@
                         <ToolbarSpacer />
                         <ToolbarSpacer />
                         <Label text="SellOut CEDI: " design="Bold" />
-                        <StepInput min="1" max="99" value="2" width="1%" change="changeCEDI" name="CEDI" id="CEDI" textAlign="Center"/>
+                        <StepInput min="1" max="99" value="8" width="1%" change="changeCEDI" name="CEDI" id="CEDI" textAlign="Center"/>
                         <ToolbarSpacer />
                         <Label text="SellOut POS: " design="Bold" />
-                        <StepInput min="1" max="99" value="2" width="1%" change="changePOS" name="POS" id="POS" textAlign="Center"/>
+                        <StepInput min="1" max="99" value="7" width="1%" change="changePOS" name="POS" id="POS" textAlign="Center"/>
                         <ToolbarSpacer />
                         <Label text="Days" design="Bold" id=""/>
                         <Input value="" id="daysTotal" editable="false" width="3%" />
