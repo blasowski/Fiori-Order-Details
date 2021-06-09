@@ -107,7 +107,7 @@ sap.ui.define([
                                 }
                             }
                             var oCheckPercentage = aChangedValue.reduce((a, b) => a + b)
-                            var oCheckDifference = (100 - oCheckPercentage).toFixed(1) / aCellsToModify.length;
+                            var oCheckDifference = (100 - oCheckPercentage) / aCellsToModify.length;
                             var oFinal = parseFloat((oResult + oCheckDifference).toFixed(1));
                             for (let i = 0; i < oCorrectCells.length; i++) {
                                 if (aStartingValue[i] == aChangedValue[i]) {
