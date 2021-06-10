@@ -79,48 +79,59 @@ sap.ui.define([
                 for (let i = 0; i < oCediPos; i++) {
                     var cell = new sap.m.Input({
                         change: function () {
+                            var aCellsToModify = [];
                             var aChangedValue = [];
+                            var aStoredValue = [];
                             for (let i = 0; i < oCorrectCells.length; i++) {
                                 var newValueString = oCorrectCells[i].getValue();
                                 var newValue = parseFloat(newValueString);
                                 aChangedValue.push(newValue);
                             }
-                            var aCellsToModify = [];
                             for (let i = 0; i < oCorrectCells.length; i++) {
-                                if (aChangedValue[i] == aStartingValue[i]) {
+                                if (aStartingValue[i] == aChangedValue[i]) {
                                     aCellsToModify.push(i);
-                                }
-                            }
-                            var aStoredValue = [];
-                            for (let i = 0; i < oCorrectCells.length; i++) {
-                                if (!(aStartingValue[i] == aChangedValue[i])) {
+                                } else if (!(aStartingValue[i] == aChangedValue[i])) {
                                     aStoredValue.splice(i, 1, aChangedValue[i]);
                                 }
                             }
-                            var oSumStored = aStoredValue.reduce((a, b) => a + b)
-                            var oResult = Math.round(parseFloat(((100 - oSumStored) / (aCellsToModify.length)).toFixed(1))) ;
+                            var oStoredResult = aStoredValue.reduce((a, b) => a + b);
+                            var oResult = parseFloat(((100 - oStoredResult) / (aCellsToModify.length)).toFixed(1));
+                            var oResultLeeway = (100 - ((oResult * aCellsToModify.length) + oStoredResult)) / 0.1;
                             for (let i = 0; i < oCorrectCells.length; i++) {
                                 if (aStartingValue[i] == aChangedValue[i]) {
                                     oCorrectCells[i].setValue(oResult);
-                                    aChangedValue.splice(i, 1, oResult)
+                                    aChangedValue.splice(i, 1, oResult);
                                     aStartingValue.splice(i, 1, oResult);
                                 }
                             }
-                            var oCheckPercentage = aChangedValue.reduce((a, b) => a + b)
-                            var oCheckDifference = (100 - oCheckPercentage) / aCellsToModify.length;
-                            var oFinal = parseFloat((oResult + oCheckDifference).toFixed(1));
-                            for (let i = 0; i < oCorrectCells.length; i++) {
-                                if (aStartingValue[i] == aChangedValue[i]) {
-                                    oCorrectCells[i].setValue(oFinal);
-                                    aChangedValue.splice(i, 1, oFinal)
-                                    aStartingValue.splice(i, 1, oFinal);
+                            if (oResultLeeway < 0) {
+                                var oCorrectedResult = parseFloat(oResult - 0.1);
+                                for (let i = 0; i < -(oResultLeeway); i++) {
+                                    if (aStartingValue[i] == aChangedValue[i]) {
+                                        oCorrectCells[oCorrectCells.length - i].setValue(oCorrectedResult);
+                                        aChangedValue.splice(oCorrectCells.length - i, 1, oCorrectedResult);
+                                        aStartingValue.splice(oCorrectCells.length - i, 1, oCorrectedResult);
+                                    } else if (aStartingValue[i] !== aChangedValue[i]) {
+                                        i++; // aumentare ???
+                                    }
                                 }
                             }
-                            var oCheckTotal = aChangedValue.reduce((a, b) => a + b)
-                            var oCheck = Math.round(oCheckTotal);
-                            if (oCheck !== 100) {
+                            if (oResultLeeway > 0) {
+                                var oCorrectedResult = parseFloat(oResult + 0.1);
+                                for (let i = 0; i < oResultLeeway; i++) {
+                                    if (aStartingValue[i] == aChangedValue[i]) {
+                                        oCorrectCells[i].setValue(oCorrectedResult);
+                                        aChangedValue.splice(i, 1, oCorrectedResult);
+                                        aStartingValue.splice(i, 1, oCorrectedResult);
+                                    } else if (aStartingValue[i] !== aChangedValue[i]) {
+                                        i++; // aumentare  ???
+                                    }
+                                }
+                            }
+                            var oCheckTotal = ((100 / parseInt(aChangedValue.reduce((a, b) => a + b))) * 100).toFixed();
+                            if (oCheckTotal != 100) {
                                 that.getView().byId("errorMessage").setProperty("visible", true);
-                            } else if (oCheck == 100) {
+                            } else if (oCheckTotal == 100) {
                                 that.getView().byId("errorMessage").setProperty("visible", false);
                             }
                         },
