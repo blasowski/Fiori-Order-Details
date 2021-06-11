@@ -12,6 +12,7 @@ sap.ui.define([
             onInit: function () {
                 BusyIndicator.hide();
                 this._onTableLoad();
+                this._renderChart();
             },
 
             _onTableLoad: function () {
@@ -82,12 +83,11 @@ sap.ui.define([
                             var aCellsToModify = [];
                             var aChangedValue = [];
                             var aStoredValue = [];
-                            for (let i = 0; i < oCorrectCells.length; i++) {
-                                var newValueString = oCorrectCells[i].getValue();
-                                var newValue = parseFloat(newValueString);
+                            for (let i = 0; i < oCells.length; i++) {
+                                var newValue = parseFloat(oCells[i].getValue());
                                 aChangedValue.push(newValue);
                             }
-                            for (let i = 0; i < oCorrectCells.length; i++) {
+                            for (let i = 0; i < oCells.length; i++) {
                                 if (aStartingValue[i] == aChangedValue[i]) {
                                     aCellsToModify.push(i);
                                 } else if (!(aStartingValue[i] == aChangedValue[i])) {
@@ -96,35 +96,35 @@ sap.ui.define([
                             }
                             var oStoredResult = aStoredValue.reduce((a, b) => a + b);
                             var oResult = parseFloat(((100 - oStoredResult) / (aCellsToModify.length)).toFixed(1));
-                            var oResultLeeway = (100 - ((oResult * aCellsToModify.length) + oStoredResult)) / 0.1;
-                            for (let i = 0; i < oCorrectCells.length; i++) {
+                            var oResultLeeway = parseFloat((100 - ((oResult * aCellsToModify.length) + oStoredResult)).toFixed(1)) / 0.1;
+                            for (let i = 0; i < oCells.length; i++) {
                                 if (aStartingValue[i] == aChangedValue[i]) {
-                                    oCorrectCells[i].setValue(oResult);
+                                    oCells[i].setValue(oResult);
                                     aChangedValue.splice(i, 1, oResult);
                                     aStartingValue.splice(i, 1, oResult);
                                 }
                             }
-                            if (oResultLeeway < 0) {
-                                var oCorrectedResult = parseFloat(oResult - 0.1);
-                                for (let i = 0; i < -(oResultLeeway); i++) {
-                                    if (aStartingValue[i] == aChangedValue[i]) {
-                                        oCorrectCells[oCorrectCells.length - i].setValue(oCorrectedResult);
-                                        aChangedValue.splice(oCorrectCells.length - i, 1, oCorrectedResult);
-                                        aStartingValue.splice(oCorrectCells.length - i, 1, oCorrectedResult);
-                                    } else if (aStartingValue[i] !== aChangedValue[i]) {
-                                        i++; // aumentare ???
-                                    }
-                                }
-                            }
                             if (oResultLeeway > 0) {
-                                var oCorrectedResult = parseFloat(oResult + 0.1);
+                                let oCorrectedResult = oResult + 0.1;
                                 for (let i = 0; i < oResultLeeway; i++) {
                                     if (aStartingValue[i] == aChangedValue[i]) {
-                                        oCorrectCells[i].setValue(oCorrectedResult);
+                                        oCells[i].setValue(oCorrectedResult);
                                         aChangedValue.splice(i, 1, oCorrectedResult);
                                         aStartingValue.splice(i, 1, oCorrectedResult);
                                     } else if (aStartingValue[i] !== aChangedValue[i]) {
-                                        i++; // aumentare  ???
+                                        oResultLeeway++;
+                                    }
+                                }
+                            }
+                            if (oResultLeeway < 0) {
+                                let oCorrectedResult = oResult - 0.1;
+                                for (let i = 0; i < -(oResultLeeway); i++) {
+                                    if (aStartingValue[i] == aChangedValue[i]) {
+                                        oCells[oCells.length - i].setValue(oCorrectedResult);
+                                        aChangedValue.splice(oCells.length - i, 1, oCorrectedResult);
+                                        aStartingValue.splice(oCells.length - i, 1, oCorrectedResult);
+                                    } else if (aStartingValue[i] !== aChangedValue[i]) {
+                                        oResultLeeway--;
                                     }
                                 }
                             }
@@ -134,6 +134,7 @@ sap.ui.define([
                             } else if (oCheckTotal == 100) {
                                 that.getView().byId("errorMessage").setProperty("visible", false);
                             }
+                            that._renderChart();
                         },
                         textAlign: "Center",
                         type: "Number",
@@ -147,32 +148,60 @@ sap.ui.define([
                 });
                 oTable.bindItems("onerow>/", oInfo);
                 this.getView().byId("daysTotal").setValue(oCediPos);
-                var oAllCells = oTable["mAggregations"]["items"][0]["mAggregations"]["cells"];
-                var oCorrectCells = oAllCells.slice(2);
+                var oCells = oTable["mAggregations"]["items"][0]["mAggregations"]["cells"].slice(2);
                 var aStartingValue = [];
-                for (let i = 0; i < oCorrectCells.length; i++) {
-                    var oldValueString = oCorrectCells[i].getValue();
+                for (let i = 0; i < oCells.length; i++) {
+                    var oldValueString = oCells[i].getValue();
                     var oldValue = parseFloat(oldValueString);
                     aStartingValue.push(oldValue);
                 }
-                var oStartingValuesSum = aStartingValue.reduce((a, b) => a + b);
-                var oStartingCheck = parseInt(oStartingValuesSum);
-                if (oStartingCheck !== 100) {
-                    that.getView().byId("errorMessage").setProperty("visible", true);
-                } else if (oStartingCheck == 100) {
-                    that.getView().byId("errorMessage").setProperty("visible", false);
+            },
+
+            _renderChart: function () {
+                var oData = {
+                    data: []
+                };
+                var oTable = this.getView().byId("daysTable");
+                var oCells = oTable["mAggregations"]["items"][0]["mAggregations"]["cells"].slice(2);
+                for (let i = 0; i < oCells.length; i++) {
+                    var oValue = oCells[i].getProperty("value");
+                    var oUpdate = {
+                        "Days": i + 1,
+                        "Values": oValue,
+                    }
+                    oData["data"].push(oUpdate);
                 }
+
+                var oJSONModel = new sap.ui.model.json.JSONModel(oData);
+                this.getView().setModel(oJSONModel, "chartData");
+
+                var oVizFrame = this.getView().byId("vizFrame");
+                oVizFrame.setVizProperties({
+                    legend: {
+                        visible: false
+                    },
+                    tooltip: {
+                        visible: true
+                    },
+                    title: {
+                        visible: false
+                    }
+                });
+                oVizFrame.setModel(oJSONModel, "chartData");
+                oVizFrame.setVizType("line");
             },
 
             changeCEDI: function () {
                 var oTable = this.getView().byId("daysTable")
                 oTable.removeAllColumns();
                 this._onTableLoad();
+                this._renderChart();
             },
             changePOS: function () {
                 var oTable = this.getView().byId("daysTable")
                 oTable.removeAllColumns();
                 this._onTableLoad();
+                this._renderChart();
             },
 
             onNavBack: function () {

@@ -2,6 +2,8 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:c="sap.suite.ui.commons"
     xmlns:v="sap.viz.ui5.controls"
+    xmlns:vd="sap.viz.ui5.data"
+    xmlns:vf="sap.viz.ui5.controls.common.feeds"
     xmlns:l="sap.ui.layout"
     xmlns:t="sap.ui.table"
     xmlns:u="sap.uxap"
@@ -32,58 +34,62 @@
                     </Breadcrumbs>
                 </u:breadcrumbs>
                 <u:actions>
-                    <Button text="Save" type="Accept" icon="sap-icon://save" />
-                    <Button text="Cancel" type="Reject" press="onNavBack" />
+                    <Button text="Cancel" type="Back" press="onNavBack" />
+                    <Button text="Save" type="Emphasized" icon="sap-icon://save" />
                 </u:actions>
             </u:ObjectPageDynamicHeaderTitle>
         </u:headerTitle>
+        <u:headerContent>
+            <Toolbar style="Clear" design="Transparent">
+                <Input value="{info>/name}">
+                    <layoutData>
+                        <OverflowToolbarLayoutData shrinkable="false" minWidth = "5%" maxWidth="20%"/>
+                    </layoutData>
+                </Input>
+                <ToolbarSeparator />
+                <Input value="{info>/description}">
+                    <layoutData>
+                        <OverflowToolbarLayoutData shrinkable="false" minWidth = "5%" maxWidth="20%"/>
+                    </layoutData>
+                </Input>
+                <ToolbarSpacer />
+                <ToolbarSpacer />
+                <Label text="SellOut CEDI: " design="Bold" />
+                <StepInput min="1" max="99" value="2" width="1%" change="changeCEDI" name="CEDI" id="CEDI" textAlign="Center"/>
+                <ToolbarSpacer />
+                <Label text="SellOut POS: " design="Bold" />
+                <StepInput min="1" max="99" value="2" width="1%" change="changePOS" name="POS" id="POS" textAlign="Center"/>
+                <ToolbarSpacer />
+                <Label text="Days" design="Bold" id=""/>
+                <Input value="" id="daysTotal" editable="false" width="3%" />
+            </Toolbar>
+        </u:headerContent>
         <u:sections>
             <u:ObjectPageSection title="Create New Profile">
-                <u:ObjectPageSubSection >
-                    <Toolbar style="Clear" design="Transparent">
-                        <Input value="{info>/name}">
-                            <layoutData>
-                                <OverflowToolbarLayoutData shrinkable="false" minWidth = "5%" maxWidth="20%"/>
-                            </layoutData>
-                        </Input>
-                        <ToolbarSeparator />
-                        <Input value="{info>/description}">
-                            <layoutData>
-                                <OverflowToolbarLayoutData shrinkable="false" minWidth = "5%" maxWidth="20%"/>
-                            </layoutData>
-                        </Input>
-                        <ToolbarSpacer />
-                        <ToolbarSpacer />
-                        <Label text="SellOut CEDI: " design="Bold" />
-                        <StepInput min="1" max="99" value="8" width="1%" change="changeCEDI" name="CEDI" id="CEDI" textAlign="Center"/>
-                        <ToolbarSpacer />
-                        <Label text="SellOut POS: " design="Bold" />
-                        <StepInput min="1" max="99" value="7" width="1%" change="changePOS" name="POS" id="POS" textAlign="Center"/>
-                        <ToolbarSpacer />
-                        <Label text="Days" design="Bold" id=""/>
-                        <Input value="" id="daysTotal" editable="false" width="3%" />
-                    </Toolbar>
-                </u:ObjectPageSubSection>
-                <u:ObjectPageSubSection visible="false" id="errorMessage">
-                    <MessageStrip text="Error! Percentage should always be 100." type="Error" showIcon="true" showCloseButton="false" class="sapUiTinyMargin" />
-                </u:ObjectPageSubSection>
                 <u:ObjectPageSubSection>
                     <ScrollContainer vertical="false" horizontal="true">
                         <Table id="daysTable">
                         </Table>
+                        <MessageStrip text="Error! Percentage should always be 100." type="Error" showIcon="true" showCloseButton="false" class="sapUiTinyMargin" id="errorMessage" visible="false"/>
                     </ScrollContainer>
                 </u:ObjectPageSubSection>
                 <u:ObjectPageSubSection >
-                            <c:ChartContainer id="chartContainer" showZoom="false" showPersonalization="false" autoAdjustHeight="true" title="Chart">
-                                <c:content>
-                                    <c:ChartContainerContent icon="sap-icon://line-chart" title="Line Chart">
-                                        <c:content>
-                                            <v:VizFrame >
-                                            </v:VizFrame>
-                                        </c:content>
-                                    </c:ChartContainerContent>
-                                </c:content>
-                            </c:ChartContainer>
+                    <v:VizFrame id="vizFrame" uiConfig="{applicationSet:'fiori'}" width="100%" vizType="line">
+                        <v:dataset>
+                            <vd:FlattenedDataset data="{chartData>/data}">
+                                <vd:dimensions>
+                                    <vd:DimensionDefinition name="Days" value="{chartData>Days}"/>
+                                </vd:dimensions>
+                                <vd:measures>
+                                    <vd:MeasureDefinition name="Values" value="{chartData>Values}"/>
+                                </vd:measures>
+                            </vd:FlattenedDataset>
+                        </v:dataset>
+                        <v:feeds>
+                            <vf:FeedItem uid="valueAxis" type="Measure" values="Values"/>
+                            <vf:FeedItem uid="categoryAxis" type="Dimension" values="Days"/>
+                        </v:feeds>
+                    </v:VizFrame>
                 </u:ObjectPageSubSection>
             </u:ObjectPageSection>
         </u:sections>
