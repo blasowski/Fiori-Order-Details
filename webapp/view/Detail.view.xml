@@ -40,13 +40,13 @@
                 <items>
                     <f:SimpleForm editable="false" layout="ColumnLayout" columnsM="2" columnsL="3" columnsXL="4">
                         <f:content>
-                            <Label text="CustomerID" />
+                            <Label text="Customer ID" design="Bold" />
                             <Text text="{orders>/CustomerID} ({orders>/ShipName})" />
-                            <Label text="Ship Address" />
+                            <Label text="Ship Address" design="Bold" />
                             <Text text="{orders>/ShipAddress}, {orders>/ShipCity}, {orders>/ShipCountry}" />
-                            <Label text="Ordered" />
+                            <Label text="Ordered" design="Bold" />
                             <Text text="{path: 'orders>/OrderDate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd/MM/yyyy' }}" />
-                            <Label text="Shipped" />
+                            <Label text="Shipped" design="Bold" />
                             <Text text="{path: 'orders>/ShippedDate', type: 'sap.ui.model.type.DateTime', formatOptions: { pattern: 'dd/MM/yyyy' }}" />
                         </f:content>
                     </f:SimpleForm>

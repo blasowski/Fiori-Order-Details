@@ -91,7 +91,7 @@ sap.ui.define([
                     window.history.go(-1);
                 } else {
                     var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                    oRouter.navTo("homepage", true);
+                    oRouter.navTo("detail", true);
                 }
             }
         });

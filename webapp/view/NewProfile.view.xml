@@ -12,18 +12,18 @@
         <u:headerTitle>
             <u:ObjectPageDynamicHeaderTitle >
                 <u:expandedHeading>
-                    <Title text="Northwind Order Details" />
+                    <Title text="Create New Profile" />
                 </u:expandedHeading>
                 <u:snappedHeading>
                     <FlexBox fitContainer="true" alignItems="Center">
-                        <Title text="Northwind Order Details" />
+                        <Title text="Create New Profile" />
                     </FlexBox>
                 </u:snappedHeading>
                 <u:expandedContent>
-                    <Text text="Profile Creation"/>
+
                 </u:expandedContent>
                 <u:snappedContent>
-                    <Text text="Profile Creation"/>
+
                 </u:snappedContent>
                 <u:breadcrumbs>
                     <Breadcrumbs separatorStyle="GreaterThan">
@@ -40,32 +40,31 @@
             </u:ObjectPageDynamicHeaderTitle>
         </u:headerTitle>
         <u:headerContent>
-            <Toolbar style="Clear" design="Transparent">
-                <Input value="{info>/name}">
+
+            <FlexBox height="5%" alignItems="Center" justifyContent="Center" wrap="Wrap" class="sapUiResponsiveMargin">
+                <ToolbarSpacer width="5px" class="sapUiResponsiveMargin" />
+                <Input value="{info>/name}" class="sapUiSizeMedium" width="200px">
                     <layoutData>
-                        <OverflowToolbarLayoutData shrinkable="false" minWidth = "5%" maxWidth="20%"/>
+                        <OverflowToolbarLayoutData shrinkable="false" minWidth = "5%" />
                     </layoutData>
                 </Input>
-                <ToolbarSeparator />
-                <Input value="{info>/description}">
+                <ToolbarSpacer width="5px" class="sapUiResponsiveMargin" />
+                <Input value="{info>/description}" class="sapUiSizeMedium" width="200px">
                     <layoutData>
-                        <OverflowToolbarLayoutData shrinkable="false" minWidth = "5%" maxWidth="20%"/>
+                        <OverflowToolbarLayoutData shrinkable="false" minWidth = "5%" />
                     </layoutData>
                 </Input>
-                <ToolbarSpacer />
-                <ToolbarSpacer />
-                <Label text="SellOut CEDI: " design="Bold" />
-                <StepInput min="1" max="99" value="2" width="1%" change="changeCEDI" name="CEDI" id="CEDI" textAlign="Center"/>
-                <ToolbarSpacer />
-                <Label text="SellOut POS: " design="Bold" />
-                <StepInput min="1" max="99" value="2" width="1%" change="changePOS" name="POS" id="POS" textAlign="Center"/>
-                <ToolbarSpacer />
-                <Label text="Days" design="Bold" id=""/>
-                <Input value="" id="daysTotal" editable="false" width="3%" />
-            </Toolbar>
+            </FlexBox>
+            <FlexBox height="5%" alignItems="Center" justifyContent="Center" wrap="Wrap" class="sapUiResponsiveMargin">
+                <Label text="SellOut CEDI: " design="Bold" class=" sapUiTinyMarginBeginEnd sapUiVisibleOnlyOnDesktop" />
+                <StepInput min="1" max="30" value="6" change="changeCEDI" name="CEDI" id="CEDI" textAlign="Center" class="sapUiSizeCompact" width="100px" />
+                <ToolbarSpacer width="5px" class="sapUiResponsiveMargin " />
+                <Label text="SellOut POS: " design="Bold" class=" sapUiTinyMarginBeginEnd sapUiVisibleOnlyOnDesktop" />
+                <StepInput min="1" max="30" value="7" change="changePOS" name="POS" id="POS" textAlign="Center" class="sapUiSizeCompact" width="100px" />
+            </FlexBox>
         </u:headerContent>
         <u:sections>
-            <u:ObjectPageSection title="Create New Profile">
+            <u:ObjectPageSection title="{info>/name}">
                 <u:ObjectPageSubSection>
                     <ScrollContainer vertical="false" horizontal="true">
                         <Table id="daysTable">
